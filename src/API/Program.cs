@@ -1,25 +1,58 @@
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
+using Persistence.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddPersistence(builder.Configuration);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
+using IServiceScope scope = await SeedDatabaseAsync(app);
+
 app.Run();
+
+static async Task<IServiceScope> SeedDatabaseAsync(WebApplication app)
+{
+    var scope = app.Services.CreateScope();
+
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+
+        var userManager = services.GetRequiredService<UserManager<User>>();
+
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        var useInMemoryDatabase = services.GetRequiredService<IConfiguration>()
+            .GetValue<bool>("UseInMemoryDatabase");
+
+        if (!useInMemoryDatabase) await context.Database.MigrateAsync();
+
+        await Seed.SeedDataAsync(userManager, roleManager);
+    }
+
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+
+        logger.LogError(ex.Message);
+    }
+
+    return scope;
+}
