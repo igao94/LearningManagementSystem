@@ -1,4 +1,6 @@
+using API.Extensions;
 using Domain.Entities;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
@@ -7,15 +9,18 @@ using Persistence.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+builder.Services.AddApiServices();
 
 builder.Services.AddPersistence(builder.Configuration);
+
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
