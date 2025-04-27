@@ -1,4 +1,4 @@
-﻿namespace Persistence.Constants;
+﻿namespace Domain.Constants;
 
 public static class UserRoles
 {

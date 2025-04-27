@@ -1,4 +1,6 @@
 using API.Extensions;
+using API.Middleware;
+using Application.Extensions;
 using Domain.Entities;
 using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApiServices();
 
+builder.Services.AddApplication();
+
 builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -18,6 +22,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

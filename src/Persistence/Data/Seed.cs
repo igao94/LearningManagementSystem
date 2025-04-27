@@ -1,6 +1,6 @@
-﻿using Domain.Entities;
+﻿using Domain.Constants;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Persistence.Constants;
 
 namespace Persistence.Data;
 
