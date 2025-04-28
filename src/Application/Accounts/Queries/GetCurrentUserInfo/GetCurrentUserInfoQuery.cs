@@ -1,8 +1,8 @@
-﻿using Application.Account.DTOs;
+﻿using Application.Accounts.DTOs;
 using Application.Core;
 using MediatR;
 
-namespace Application.Account.Queries.GetCurrentUserInfo;
+namespace Application.Accounts.Queries.GetCurrentUserInfo;
 
 public class GetCurrentUserInfoQuery : IRequest<Result<CurrentUserDto>>
 {

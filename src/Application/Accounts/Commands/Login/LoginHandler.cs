@@ -1,10 +1,10 @@
-﻿using Application.Account.DTOs;
+﻿using Application.Accounts.DTOs;
 using Application.Core;
 using Application.Interfaces;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Account.Commands.Login;
+namespace Application.Accounts.Commands.Login;
 
 public class LoginHandler(IUnitOfWork unitOfWork,
     ITokenService tokenService) : IRequestHandler<LoginCommand, Result<AccountDto>>

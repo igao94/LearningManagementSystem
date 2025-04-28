@@ -1,5 +1,5 @@
-﻿using Application.Account.Commands.Register;
-using Application.Account.Validators;
+﻿using Application.Accounts.Commands.Register;
+using Application.Accounts.Validators;
 using Application.Core;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

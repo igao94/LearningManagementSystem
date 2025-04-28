@@ -1,8 +1,8 @@
-﻿using Application.Account.DTOs;
+﻿using Application.Accounts.DTOs;
 using Application.Core;
 using MediatR;
 
-namespace Application.Account.Commands.Register;
+namespace Application.Accounts.Commands.Register;
 
 public class RegisterCommand(RegisterDto registerDto) : IRequest<Result<AccountDto>>
 {

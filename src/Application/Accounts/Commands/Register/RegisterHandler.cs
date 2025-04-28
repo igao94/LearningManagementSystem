@@ -1,4 +1,4 @@
-﻿using Application.Account.DTOs;
+﻿using Application.Accounts.DTOs;
 using Application.Core;
 using Application.Interfaces;
 using Domain.Constants;
@@ -6,7 +6,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Account.Commands.Register;
+namespace Application.Accounts.Commands.Register;
 
 public class RegisterHandler(IUnitOfWork unitOfWork,
     ITokenService tokenService) : IRequestHandler<RegisterCommand, Result<AccountDto>>

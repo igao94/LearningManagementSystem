@@ -1,4 +1,4 @@
-﻿namespace Application.Account.DTOs;
+﻿namespace Application.Accounts.DTOs;
 
 public class RegisterDto
 {
