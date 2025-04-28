@@ -17,6 +17,11 @@ public class AccountRepository(UserManager<User> userManager) : IAccountReposito
         return await userManager.Users.AnyAsync(u => u.Email == email);
     }
 
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        return await userManager.FindByEmailAsync(email);
+    }
+
     public async Task<IdentityResult> RegisterUserAsync(User user, string password)
     {
         return await userManager.CreateAsync(user, password);
@@ -25,5 +30,10 @@ public class AccountRepository(UserManager<User> userManager) : IAccountReposito
     public async Task<bool> UsernameExistsAsync(string username)
     {
         return await userManager.Users.AnyAsync(u => u.UserName!.ToLower() == username);
+    }
+
+    public async Task<bool> CheckPasswordAsync(User user, string password)
+    {
+        return await userManager.CheckPasswordAsync(user, password);
     }
 }

@@ -11,15 +11,13 @@ public class Seed
         await CreateRolesAsync(roleManager);
 
         await CreateUsersAsync(userManager);
-
-        await CreateAdminAsync(userManager);
     }
 
-    private static async Task CreateAdminAsync(UserManager<User> userManager)
+    private static async Task CreateUsersAsync(UserManager<User> userManager)
     {
         if (!userManager.Users.Any())
         {
-            var user = new User
+            var admin = new User
             {
                 Id = "admin-id",
                 Email = "admin@test.com",
@@ -28,16 +26,10 @@ public class Seed
                 LastName = "Admin"
             };
 
-            await userManager.CreateAsync(user, "Pa$$w0rd");
+            await userManager.CreateAsync(admin, "Pa$$w0rd");
 
-            await userManager.AddToRoleAsync(user, UserRoles.Admin);
-        }
-    }
+            await userManager.AddToRoleAsync(admin, UserRoles.Admin);
 
-    private static async Task CreateUsersAsync(UserManager<User> userManager)
-    {
-        if (!userManager.Users.Any())
-        {
             List<User> users =
             [
                 new ()

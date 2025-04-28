@@ -9,4 +9,6 @@ public interface IAccountRepository
     Task<IdentityResult> AddToRoleAsync(User user, string role);
     Task<bool> EmailExistsAsync(string email);
     Task<bool> UsernameExistsAsync(string username);
+    Task<User?> GetUserByEmailAsync(string email);
+    Task<bool> CheckPasswordAsync(User user, string password);
 }

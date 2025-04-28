@@ -37,14 +37,14 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
                 }
                 else
                 {
-                    validationErrors[error.PropertyName] = [error.ErrorMessage];
+                    validationErrors[error.PropertyName] = new[] { error.ErrorMessage };
                 }
             }
         }
 
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-        var validationProblem = new ValidationProblemDetails(validationErrors)
+        var validationProblemDetails = new ValidationProblemDetails(validationErrors)
         {
             Status = context.Response.StatusCode,
             Type = "ValidationFailed",
@@ -52,7 +52,7 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
             Detail = "One or more validation errors has occured"
         };
 
-        await context.Response.WriteAsJsonAsync(validationProblem);
+        await context.Response.WriteAsJsonAsync(validationProblemDetails);
     }
 
     private async Task HandleExceptionAsync(HttpContext context, Exception ex)
