@@ -19,6 +19,8 @@ public static class DependencyInjection
 
         services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
 
+        services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
         return services;
     }
 }
