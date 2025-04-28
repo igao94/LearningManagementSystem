@@ -11,4 +11,5 @@ public interface IAccountRepository
     Task<bool> UsernameExistsAsync(string username);
     Task<User?> GetUserByEmailAsync(string email);
     Task<bool> CheckPasswordAsync(User user, string password);
+    Task<User?> GetUserByIdAsync(string id);
 }

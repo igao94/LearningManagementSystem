@@ -4,7 +4,7 @@ using Application.Interfaces;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Account.Login;
+namespace Application.Account.Commands.Login;
 
 public class LoginHandler(IUnitOfWork unitOfWork,
     ITokenService tokenService) : IRequestHandler<LoginCommand, Result<AccountDto>>

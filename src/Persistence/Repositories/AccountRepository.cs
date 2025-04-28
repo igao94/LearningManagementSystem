@@ -36,4 +36,9 @@ public class AccountRepository(UserManager<User> userManager) : IAccountReposito
     {
         return await userManager.CheckPasswordAsync(user, password);
     }
+
+    public async Task<User?> GetUserByIdAsync(string id)
+    {
+        return await userManager.FindByIdAsync(id);
+    }
 }

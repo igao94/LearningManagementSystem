@@ -20,6 +20,8 @@ public class TokenService(IConfiguration config, UserManager<User> userManager) 
         List<Claim> claims =
         [
             new(ClaimTypes.NameIdentifier, user.Id),
+            new("FirstName", user.FirstName),
+            new("LastName", user.LastName),
             new(ClaimTypes.Name, user.UserName),
             new(ClaimTypes.Email, user.Email)
         ];

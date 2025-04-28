@@ -6,7 +6,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Account.Register;
+namespace Application.Account.Commands.Register;
 
 public class RegisterHandler(IUnitOfWork unitOfWork,
     ITokenService tokenService) : IRequestHandler<RegisterCommand, Result<AccountDto>>

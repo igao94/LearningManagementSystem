@@ -2,7 +2,7 @@
 using Application.Core;
 using MediatR;
 
-namespace Application.Account.Register;
+namespace Application.Account.Commands.Register;
 
 public class RegisterCommand(RegisterDto registerDto) : IRequest<Result<AccountDto>>
 {

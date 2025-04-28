@@ -2,7 +2,7 @@
 using Application.Core;
 using MediatR;
 
-namespace Application.Account.Login;
+namespace Application.Account.Commands.Login;
 
 public class LoginCommand(LoginDto loginDto) : IRequest<Result<AccountDto>>
 {

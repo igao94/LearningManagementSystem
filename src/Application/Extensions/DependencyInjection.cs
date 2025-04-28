@@ -1,4 +1,4 @@
-﻿using Application.Account.Register;
+﻿using Application.Account.Commands.Register;
 using Application.Account.Validators;
 using Application.Core;
 using FluentValidation;

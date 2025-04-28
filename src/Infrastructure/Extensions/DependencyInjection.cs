@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Infrastructure.Security;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,10 @@ public static class DependencyInjection
             });
 
         services.AddScoped<ITokenService, TokenService>();
+
+        services.AddScoped<IUserAccessor, UserAccessor>();
+
+        services.AddHttpContextAccessor();
 
         return services;
     }
