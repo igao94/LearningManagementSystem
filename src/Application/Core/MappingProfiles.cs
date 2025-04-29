@@ -1,4 +1,5 @@
-﻿using Application.Students.DTOs;
+﻿using Application.Courses.DTOs;
+using Application.Students.DTOs;
 using AutoMapper;
 using Domain.Entities;
 
@@ -11,5 +12,7 @@ public class MappingProfiles : Profile
         CreateMap<User, StudentDto>();
 
         CreateMap<UpdateStudentDto, User>();
+
+        CreateMap<Course, CourseDto>();
     }
 }
