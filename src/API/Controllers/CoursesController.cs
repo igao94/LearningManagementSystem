@@ -1,4 +1,5 @@
 ﻿using Application.Courses;
+using Application.Courses.Commands.CreateCourse;
 using Application.Courses.DTOs;
 using Application.Courses.Queries.GetAllCourses;
 using Application.Courses.Queries.GetCourseById;
@@ -18,5 +19,13 @@ public class CoursesController : BaseApiController
     public async Task<ActionResult<CourseDto>> GetCourseById(string id)
     {
         return HandleResult(await Mediator.Send(new GetCourseByIdQuery(id)));
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<CourseDto>> CreateCourse(CreateCourseDto createCourseDto)
+    {
+        var result = await Mediator.Send(new CreateCourseCommand(createCourseDto));
+
+        return HandleCreatedResult(result, nameof(GetCourseById), new { id = result.Value?.Id }, result.Value);
     }
 }

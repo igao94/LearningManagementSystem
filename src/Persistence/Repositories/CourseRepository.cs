@@ -33,4 +33,6 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     {
         return await context.Courses.FindAsync(id);
     }
+
+    public void AddCourse(Course course) => context.Courses.Add(course);
 }
