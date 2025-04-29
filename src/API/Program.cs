@@ -55,7 +55,7 @@ static async Task<IServiceScope> SeedDatabaseAsync(WebApplication app)
 
         if (!useInMemoryDatabase) await context.Database.MigrateAsync();
 
-        await Seed.SeedDataAsync(userManager, roleManager);
+        await Seed.SeedDataAsync(context, userManager, roleManager);
     }
 
     catch (Exception ex)
