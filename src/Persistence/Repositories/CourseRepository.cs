@@ -35,4 +35,9 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     }
 
     public void AddCourse(Course course) => context.Courses.Add(course);
+
+    public async Task<bool> CourseExistsAsync(string title)
+    {
+        return await context.Courses.AnyAsync(c => c.Title.ToLower() == title.ToLower());
+    }
 }

@@ -3,6 +3,8 @@ using Application.Courses.Commands.CreateCourse;
 using Application.Courses.DTOs;
 using Application.Courses.Queries.GetAllCourses;
 using Application.Courses.Queries.GetCourseById;
+using Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,6 +23,7 @@ public class CoursesController : BaseApiController
         return HandleResult(await Mediator.Send(new GetCourseByIdQuery(id)));
     }
 
+    [Authorize(Policy = PolicyTypes.RequireAdminRole)]
     [HttpPost]
     public async Task<ActionResult<CourseDto>> CreateCourse(CreateCourseDto createCourseDto)
     {

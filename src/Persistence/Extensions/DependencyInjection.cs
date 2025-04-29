@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Constants;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,9 @@ public static class DependencyInjection
         services.AddScoped<ICourseRepository, CourseRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddAuthorizationBuilder()
+            .AddPolicy(PolicyTypes.RequireAdminRole, policy => policy.RequireRole(UserRoles.Admin));
 
         return services;
     }

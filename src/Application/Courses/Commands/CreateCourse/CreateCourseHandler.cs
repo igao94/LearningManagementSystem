@@ -14,6 +14,11 @@ public class CreateCourseHandler(IUnitOfWork unitOfWork,
     {
         var course = mapper.Map<Course>(request.CreateCourseDto);
 
+        if (await unitOfWork.CourseRepository.CourseExistsAsync(course.Title))
+        {
+            return Result<CourseDto>.Failure("Course with that title already exists.", 400);
+        }
+
         unitOfWork.CourseRepository.AddCourse(course);
 
         var result = await unitOfWork.SaveChangesAsync();
