@@ -1,0 +1,28 @@
+﻿using Application.Core;
+using Application.Interfaces;
+using Domain.Interfaces;
+using MediatR;
+
+namespace Application.Students.Commands.DeleteStudent;
+
+public class DeleteStudentHandler(IUnitOfWork unitOfWork,
+    IUserAccessor userAccessor) : IRequestHandler<DeleteStudentCommand, Result<Unit>>
+{
+    public async Task<Result<Unit>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
+    {
+        var student = await unitOfWork.StudentRepository.GetStudentByIdAsync(userAccessor.GetUserId());
+
+        if (student is null)
+        {
+            return Result<Unit>.Failure("Student not found.", 404);
+        }
+
+        unitOfWork.StudentRepository.RemoveStudent(student);
+
+        var result = await unitOfWork.SaveChangesAsync();
+
+        return result
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure("Failed to delete student.", 400);
+    }
+}

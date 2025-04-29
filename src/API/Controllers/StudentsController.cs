@@ -1,4 +1,5 @@
 ﻿using Application.Students;
+using Application.Students.Commands.DeleteStudent;
 using Application.Students.DTOs;
 using Application.Students.Queries.GetAllStudents;
 using Application.Students.Queries.GetStudentById;
@@ -18,5 +19,11 @@ public class StudentsController : BaseApiController
     public async Task<ActionResult<StudentDto>> GetStudentById(string id)
     {
         return HandleResult(await Mediator.Send(new GetStudentByIdQuery(id)));
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteStudent()
+    {
+        return HandleResult(await Mediator.Send(new DeleteStudentCommand()));
     }
 }

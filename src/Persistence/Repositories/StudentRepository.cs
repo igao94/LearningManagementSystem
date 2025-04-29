@@ -7,6 +7,8 @@ namespace Persistence.Repositories;
 
 public class StudentRepository(AppDbContext context) : IStudentRepository
 {
+    public void RemoveStudent(User student) => context.Users.Remove(student);
+
     public async Task<IEnumerable<User>> GetAllStudentsAsync(string id, string? searchTerm)
     {
         var query = context.Users
@@ -35,5 +37,10 @@ public class StudentRepository(AppDbContext context) : IStudentRepository
             .Where(u => u.Id == id && u.Id != currentUserId)
             .AsNoTracking()
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<User?> GetStudentByIdAsync(string id)
+    {
+        return await context.Users.FindAsync(id);
     }
 }
