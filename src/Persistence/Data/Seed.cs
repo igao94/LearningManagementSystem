@@ -25,7 +25,7 @@ public class Seed
             [
                 new ()
                 {
-                    Id = "C#-id",
+                    Id = "CSharp-id",
                     Title = "C# Basics",
                     Description = "Learn the basics of C# programming language.",
                     InstructorName = "James Anderson",

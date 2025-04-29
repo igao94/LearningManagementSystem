@@ -14,7 +14,7 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
         if (!string.IsNullOrEmpty(searchTerm))
         {
             query = query.Where(c => c.Title.ToLower().Contains(searchTerm) ||
-                c.InstructorName.Contains(searchTerm));
+                c.InstructorName.ToLower().Contains(searchTerm));
         }
 
         query = sort switch
@@ -27,5 +27,10 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
         var courses = await query.AsNoTracking().ToListAsync();
 
         return courses;
+    }
+
+    public async Task<Course?> GetCourseByIdAsync(string id)
+    {
+        return await context.Courses.FindAsync(id);
     }
 }
