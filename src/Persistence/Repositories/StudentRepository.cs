@@ -28,4 +28,12 @@ public class StudentRepository(AppDbContext context) : IStudentRepository
 
         return students;
     }
+
+    public async Task<User?> GetStudentByIdAsync(string id, string currentUserId)
+    {
+        return await context.Users
+            .Where(u => u.Id == id && u.Id != currentUserId)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+    }
 }
