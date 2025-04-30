@@ -1,6 +1,7 @@
 ﻿using Application.Courses;
 using Application.Courses.Commands.CreateCourse;
 using Application.Courses.Commands.CreateLesson;
+using Application.Courses.Commands.UpdateCourse;
 using Application.Courses.DTOs;
 using Application.Courses.Queries.GetAllCourses;
 using Application.Courses.Queries.GetCourseById;
@@ -38,5 +39,14 @@ public class CoursesController : BaseApiController
     public async Task<ActionResult<LessonDto>> CreateLesson(CreateLessonDto createLessonDto)
     {
         return HandleResult(await Mediator.Send(new CreateLessonCommand(createLessonDto)));
+    }
+
+    [Authorize(Policy = PolicyTypes.RequireAdminRole)]
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateCourse(string id, UpdateCourseDto updateCourseDto)
+    {
+        updateCourseDto.Id = id;
+
+        return HandleResult(await Mediator.Send(new UpdateCourseCommand(updateCourseDto)));
     }
 }
