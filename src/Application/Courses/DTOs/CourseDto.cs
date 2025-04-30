@@ -7,4 +7,5 @@ public class CourseDto
     public string Description { get; set; } = string.Empty;
     public string InstructorName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public ICollection<LessonDto> Lessons { get; set; } = [];
 }

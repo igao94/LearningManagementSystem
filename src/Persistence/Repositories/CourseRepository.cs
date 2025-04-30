@@ -29,9 +29,28 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
         return courses;
     }
 
-    public async Task<Course?> GetCourseByIdAsync(string id)
+    public async Task<Course?> GetCourseByIdAsync(string id) => await context.Courses.FindAsync(id);
+
+    public async Task<Course?> GetCourseWithLessonsByIdAsync(string id)
     {
-        return await context.Courses.FindAsync(id);
+        return await context.Courses
+            .Select(c => new Course
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Description = c.Description,
+                InstructorName = c.InstructorName,
+                CreatedAt = c.CreatedAt,
+                Lessons = c.Lessons.Select(l => new Lesson
+                {
+                    Id = l.Id,
+                    Title = l.Title,
+                    ContentUrl = l.ContentUrl
+                })
+                .ToList()
+            })
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public void AddCourse(Course course) => context.Courses.Add(course);

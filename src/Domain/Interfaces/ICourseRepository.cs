@@ -6,6 +6,7 @@ public interface ICourseRepository
 {
     Task<IEnumerable<Course>> GetAllCoursesAsync(string? searchTerm, string? sort);
     Task<Course?> GetCourseByIdAsync(string id);
+    Task<Course?> GetCourseWithLessonsByIdAsync(string id);
     void AddCourse(Course course);
     Task<bool> CourseExistsAsync(string title);
 }

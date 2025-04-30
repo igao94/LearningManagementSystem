@@ -26,7 +26,7 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
         var user = new User
         {
             Email = request.RegisterDto.Email,
-            UserName = request.RegisterDto.Username.ToLower(),
+            UserName = request.RegisterDto.Username,
             FirstName = request.RegisterDto.FirstName,
             LastName = request.RegisterDto.LastName
         };

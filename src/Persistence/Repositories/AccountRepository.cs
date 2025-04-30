@@ -29,7 +29,7 @@ public class AccountRepository(UserManager<User> userManager) : IAccountReposito
 
     public async Task<bool> UsernameExistsAsync(string username)
     {
-        return await userManager.Users.AnyAsync(u => u.UserName!.ToLower() == username);
+        return await userManager.Users.AnyAsync(u => u.UserName == username);
     }
 
     public async Task<bool> CheckPasswordAsync(User user, string password)

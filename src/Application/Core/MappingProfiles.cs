@@ -16,5 +16,7 @@ public class MappingProfiles : Profile
         CreateMap<Course, CourseDto>();
 
         CreateMap<CreateCourseDto, Course>();
+
+        CreateMap<Lesson, LessonDto>();
     }
 }

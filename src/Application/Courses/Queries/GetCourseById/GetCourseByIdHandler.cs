@@ -11,7 +11,7 @@ public class GetCourseByIdHandler(IUnitOfWork unitOfWork,
 {
     public async Task<Result<CourseDto>> Handle(GetCourseByIdQuery request, CancellationToken cancellationToken)
     {
-        var course = await unitOfWork.CourseRepository.GetCourseByIdAsync(request.Id);
+        var course = await unitOfWork.CourseRepository.GetCourseWithLessonsByIdAsync(request.Id);
 
         if (course is null)
         {
