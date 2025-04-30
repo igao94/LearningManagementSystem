@@ -61,4 +61,8 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     }
 
     public void RemoveCourse(Course course) => context.Courses.Remove(course);
+
+    public async Task<Lesson?> GetLessonByIdAsync(string id) => await context.Lessons.FindAsync(id);
+
+    public void RemoveLesson(Lesson lesson) => context.Lessons.Remove(lesson);
 }
