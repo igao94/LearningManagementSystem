@@ -59,4 +59,6 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     {
         return await context.Courses.AnyAsync(c => c.Title.ToLower() == title.ToLower());
     }
+
+    public void RemoveCourse(Course course) => context.Courses.Remove(course);
 }

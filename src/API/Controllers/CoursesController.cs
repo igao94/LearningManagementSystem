@@ -1,6 +1,7 @@
 ﻿using Application.Courses;
 using Application.Courses.Commands.CreateCourse;
 using Application.Courses.Commands.CreateLesson;
+using Application.Courses.Commands.DeleteCourse;
 using Application.Courses.Commands.UpdateCourse;
 using Application.Courses.DTOs;
 using Application.Courses.Queries.GetAllCourses;
@@ -48,5 +49,12 @@ public class CoursesController : BaseApiController
         updateCourseDto.Id = id;
 
         return HandleResult(await Mediator.Send(new UpdateCourseCommand(updateCourseDto)));
+    }
+
+    [Authorize(Policy = PolicyTypes.RequireAdminRole)]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCourse(string id)
+    {
+        return HandleResult(await Mediator.Send(new DeleteCouresCommand(id)));
     }
 }
