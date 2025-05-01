@@ -13,5 +13,9 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(c => c.Description).IsRequired();
 
         builder.Property(c => c.InstructorName).IsRequired();
+
+        builder.HasIndex(c => c.Title);
+
+        builder.HasIndex(c => c.InstructorName);
     }
 }
