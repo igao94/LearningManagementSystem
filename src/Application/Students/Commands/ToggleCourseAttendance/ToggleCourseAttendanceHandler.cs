@@ -51,7 +51,7 @@ public class ToggleCourseAttendanceHandler(IUnitOfWork unitOfWork,
         }
         else
         {
-            unitOfWork.StudentRepository.RemoveAttendance(attendance);
+            unitOfWork.StudentRepository.RemoveCourseAttendance(attendance);
         }
     }
 }

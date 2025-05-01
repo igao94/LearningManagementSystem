@@ -10,12 +10,15 @@ public class DeleteStudentHandler(IUnitOfWork unitOfWork,
 {
     public async Task<Result<Unit>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
     {
-        var student = await unitOfWork.StudentRepository.GetStudentByIdAsync(userAccessor.GetUserId());
+        var student = await unitOfWork.StudentRepository
+            .GetStudentWithCoursesByIdAsync(userAccessor.GetUserId());
 
         if (student is null)
         {
             return Result<Unit>.Failure("Student not found.", 404);
         }
+
+        unitOfWork.StudentRepository.RemoveCourseAttendances(student.CourseAttendances);
 
         unitOfWork.StudentRepository.RemoveStudent(student);
 
