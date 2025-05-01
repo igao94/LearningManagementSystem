@@ -12,4 +12,5 @@ public interface ICourseRepository
     Task<bool> CourseExistsAsync(string title);
     Task<Lesson?> GetLessonByIdAsync(string id);
     void RemoveLesson(Lesson lesson);
+    Task<Course?> GetCourseWithStudentsByIdAsync(string id);
 }

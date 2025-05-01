@@ -8,12 +8,14 @@ public class DeleteCourseHandler(IUnitOfWork unitOfWork) : IRequestHandler<Delet
 {
     public async Task<Result<Unit>> Handle(DeleteCouresCommand request, CancellationToken cancellationToken)
     {
-        var course = await unitOfWork.CourseRepository.GetCourseByIdAsync(request.Id);
+        var course = await unitOfWork.CourseRepository.GetCourseWithStudentsByIdAsync(request.Id);
 
         if (course is null)
         {
             return Result<Unit>.Failure("Course not found.", 404);
         }
+
+        unitOfWork.StudentRepository.RemoveCourseAttendances(course.Attendees);
 
         unitOfWork.CourseRepository.RemoveCourse(course);
 

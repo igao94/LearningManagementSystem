@@ -31,6 +31,13 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 
     public async Task<Course?> GetCourseByIdAsync(string id) => await context.Courses.FindAsync(id);
 
+    public async Task<Course?> GetCourseWithStudentsByIdAsync(string id)
+    {
+        return await context.Courses
+            .Include(c => c.Attendees)
+            .FirstOrDefaultAsync(u => u.Id == id);
+    }
+
     public async Task<Course?> GetCourseWithLessonsByIdAsync(string id)
     {
         return await context.Courses
