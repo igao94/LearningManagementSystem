@@ -17,5 +17,7 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.HasIndex(c => c.Title);
 
         builder.HasIndex(c => c.InstructorName);
+
+        builder.HasIndex(c => c.CreatedAt);
     }
 }
