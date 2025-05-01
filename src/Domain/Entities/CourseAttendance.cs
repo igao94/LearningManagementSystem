@@ -6,5 +6,5 @@ public class CourseAttendance
     public User Student { get; set; } = null!;
     public string CourseId { get; set; } = null!;
     public Course Course { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

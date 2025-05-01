@@ -43,4 +43,13 @@ public class StudentRepository(AppDbContext context) : IStudentRepository
     {
         return await context.Users.FindAsync(id);
     }
+
+    public async Task<CourseAttendance?> GetAttendanceByIdAsync(string studentId, string courseId)
+    {
+        return await context.CourseAttendances.FindAsync(studentId, courseId);
+    }
+
+    public void AddCourseAttendance(CourseAttendance attendance) => context.CourseAttendances.Add(attendance);
+
+    public void RemoveAttendance(CourseAttendance attendance) => context.CourseAttendances.Remove(attendance);
 }
