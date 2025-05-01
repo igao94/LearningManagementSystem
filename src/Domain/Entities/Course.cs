@@ -8,5 +8,6 @@ public class Course
     public string InstructorName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public ICollection<Lesson> Lessons { get; set; } = [];
+    public ICollection<CourseAttendance> Attendees { get; set; } = [];
 }
 
