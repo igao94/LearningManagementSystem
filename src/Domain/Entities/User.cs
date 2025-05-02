@@ -8,4 +8,5 @@ public class User : IdentityUser
     public string LastName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public ICollection<CourseAttendance> CourseAttendances { get; set; } = [];
+    public ICollection<LessonProgress> LessonProgresses { get; set; } = [];
 }

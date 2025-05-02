@@ -8,4 +8,5 @@ public class Lesson
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public Course Course { get; set; } = null!;
     public string CourseId { get; set; } = null!;
+    public ICollection<LessonProgress> LessonProgresses { get; set; } = [];
 }

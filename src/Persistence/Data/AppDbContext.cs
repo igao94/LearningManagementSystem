@@ -13,6 +13,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
     public DbSet<CourseAttendance> CourseAttendances { get; set; }
 
+    public DbSet<LessonProgress> LessonProgresses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
