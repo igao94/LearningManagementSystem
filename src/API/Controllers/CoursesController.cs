@@ -7,7 +7,9 @@ using Application.Courses.Commands.UpdateCourse;
 using Application.Courses.Commands.UpdateLesson;
 using Application.Courses.DTOs;
 using Application.Courses.Queries.GetAllCourses;
+using Application.Courses.Queries.GetCourseAttendees;
 using Application.Courses.Queries.GetCourseById;
+using Application.Students.DTOs;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -74,5 +76,11 @@ public class CoursesController : BaseApiController
         updateLessonDto.Id = id;
 
         return HandleResult(await Mediator.Send(new UpdateLessonCommand(updateLessonDto)));
+    }
+
+    [HttpGet("get-course-attendees/{id}")]
+    public async Task<ActionResult<IEnumerable<StudentDto>>> GetCourseAttendees(string id)
+    {
+        return HandleResult(await Mediator.Send(new GetCourseAttendeesQuery(id)));
     }
 }

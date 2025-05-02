@@ -89,4 +89,11 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     public async Task<Lesson?> GetLessonByIdAsync(string id) => await context.Lessons.FindAsync(id);
 
     public void RemoveLesson(Lesson lesson) => context.Lessons.Remove(lesson);
+
+    public async Task<IEnumerable<User>> GetCourseAttendees(string id)
+    {
+        return await context.Users
+            .Where(u => u.CourseAttendances.Any(ca => ca.CourseId == id))
+            .ToListAsync();
+    }
 }

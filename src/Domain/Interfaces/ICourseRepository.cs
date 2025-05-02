@@ -13,4 +13,5 @@ public interface ICourseRepository
     Task<Lesson?> GetLessonByIdAsync(string id);
     void RemoveLesson(Lesson lesson);
     Task<Course?> GetCourseWithStudentsByIdAsync(string id);
+    Task<IEnumerable<User>> GetCourseAttendees(string id);
 }
