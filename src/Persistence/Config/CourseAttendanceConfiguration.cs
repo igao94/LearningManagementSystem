@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Persistence.Data;
+namespace Persistence.Config;
 
 public class CourseAttendanceConfiguration : IEntityTypeConfiguration<CourseAttendance>
 {
