@@ -96,4 +96,14 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
             .Where(u => u.CourseAttendances.Any(ca => ca.CourseId == id))
             .ToListAsync();
     }
+
+    public async Task<LessonProgress?> GetLessonProgressAsync(string studentId, string lessonId)
+    {
+        return await context.LessonProgresses.FindAsync(studentId, lessonId);
+    }
+
+    public void AddLessonProgress(LessonProgress lessonProgress)
+    {
+        context.LessonProgresses.Add(lessonProgress);
+    }
 }

@@ -3,6 +3,7 @@ using Application.Courses.Commands.CreateCourse;
 using Application.Courses.Commands.CreateLesson;
 using Application.Courses.Commands.DeleteCourse;
 using Application.Courses.Commands.DeleteLesson;
+using Application.Courses.Commands.TrackLessonProgress;
 using Application.Courses.Commands.UpdateCourse;
 using Application.Courses.Commands.UpdateLesson;
 using Application.Courses.DTOs;
@@ -82,5 +83,11 @@ public class CoursesController : BaseApiController
     public async Task<ActionResult<IEnumerable<StudentDto>>> GetCourseAttendees(string id)
     {
         return HandleResult(await Mediator.Send(new GetCourseAttendeesQuery(id)));
+    }
+
+    [HttpPost("mark-lesson-completed/{lessonId}")]
+    public async Task<ActionResult> MarkLessonCompleted(string lessonId)
+    {
+        return HandleResult(await Mediator.Send(new TrackLessonProgressCommand(lessonId)));
     }
 }
