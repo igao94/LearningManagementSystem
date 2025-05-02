@@ -13,7 +13,8 @@ public class MappingProfiles : Profile
 
         CreateMap<UpdateStudentDto, User>();
 
-        CreateMap<Course, CourseDto>();
+        CreateMap<Course, CourseDto>()
+            .ForMember(dest => dest.StudentsCount, opt => opt.MapFrom(src => src.Attendees.Count));
 
         CreateMap<CreateCourseDto, Course>();
 

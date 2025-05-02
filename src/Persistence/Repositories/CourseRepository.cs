@@ -9,7 +9,21 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 {
     public async Task<IEnumerable<Course>> GetAllCoursesAsync(string? searchTerm, string? sort)
     {
-        var query = context.Courses.AsQueryable();
+        var query = context.Courses
+            .Select(c => new Course
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Description = c.Description,
+                InstructorName = c.InstructorName,
+                CreatedAt = c.CreatedAt,
+                Attendees = c.Attendees.Select(ca => new CourseAttendance
+                {
+                    StudentId = ca.StudentId,
+                })
+                .ToList()
+            })
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
@@ -48,13 +62,16 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
                 Description = c.Description,
                 InstructorName = c.InstructorName,
                 CreatedAt = c.CreatedAt,
+                Attendees = c.Attendees.Select(ca => new CourseAttendance
+                {
+                    StudentId = ca.StudentId,
+                }).ToList(),
                 Lessons = c.Lessons.Select(l => new Lesson
                 {
                     Id = l.Id,
                     Title = l.Title,
                     ContentUrl = l.ContentUrl
-                })
-                .ToList()
+                }).ToList()
             })
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
