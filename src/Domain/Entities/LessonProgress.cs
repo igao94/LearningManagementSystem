@@ -7,5 +7,5 @@ public class LessonProgress
     public string LessonId { get; set; } = null!;
     public Lesson Lesson { get; set; } = null!;
     public bool IsCompleted { get; set; }
-    public DateTime CompletedAt { get; set; }
+    public DateTime CompletedAt { get; set; } = DateTime.UtcNow;
 }
