@@ -101,8 +101,16 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 
     public async Task<IEnumerable<User>> GetCourseAttendees(string id)
     {
-        return await context.Users
-            .Where(u => u.CourseAttendances.Any(ca => ca.CourseId == id))
+        return await context.CourseAttendances
+            .Where(ca => ca.CourseId == id)
+            .Select(ca => new User
+            {
+                Id = ca.StudentId,
+                Email = ca.Student.Email,
+                UserName = ca.Student.UserName,
+                FirstName = ca.Student.FirstName,
+                LastName = ca.Student.LastName
+            })
             .ToListAsync();
     }
 
