@@ -8,12 +8,14 @@ public class DeleteLessonHandler(IUnitOfWork unitOfWork) : IRequestHandler<Delet
 {
     public async Task<Result<Unit>> Handle(DeleteLessonCommand request, CancellationToken cancellationToken)
     {
-        var lesson = await unitOfWork.CourseRepository.GetLessonByIdAsync(request.Id);
+        var lesson = await unitOfWork.CourseRepository.GetLessonWithProgressByIdAsync(request.Id);
 
         if (lesson is null)
         {
             return Result<Unit>.Failure("Lesson not found.", 404);
         }
+
+        unitOfWork.CourseRepository.RemoveLessonProgresses(lesson.LessonProgresses);
 
         unitOfWork.CourseRepository.RemoveLesson(lesson);
 

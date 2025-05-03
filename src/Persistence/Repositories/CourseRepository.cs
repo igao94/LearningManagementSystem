@@ -45,11 +45,13 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 
     public async Task<Course?> GetCourseByIdAsync(string id) => await context.Courses.FindAsync(id);
 
-    public async Task<Course?> GetCourseWithStudentsByIdAsync(string id)
+    public async Task<Course?> GetCourseWithAttendeesAndLessonsAndProgressByIdAsync(string id)
     {
         return await context.Courses
             .Include(c => c.Attendees)
-            .FirstOrDefaultAsync(u => u.Id == id);
+            .Include(c => c.Lessons)
+                .ThenInclude(l => l.LessonProgresses)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Course?> GetCourseWithLessonsByIdAsync(string id)
@@ -88,6 +90,13 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 
     public async Task<Lesson?> GetLessonByIdAsync(string id) => await context.Lessons.FindAsync(id);
 
+    public async Task<Lesson?> GetLessonWithProgressByIdAsync(string id)
+    {
+        return await context.Lessons
+            .Include(l => l.LessonProgresses)
+            .FirstOrDefaultAsync(u => u.Id == id);
+    }
+
     public void RemoveLesson(Lesson lesson) => context.Lessons.Remove(lesson);
 
     public async Task<IEnumerable<User>> GetCourseAttendees(string id)
@@ -105,5 +114,10 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     public void AddLessonProgress(LessonProgress lessonProgress)
     {
         context.LessonProgresses.Add(lessonProgress);
+    }
+
+    public void RemoveLessonProgresses(IEnumerable<LessonProgress> lessonProgresses)
+    {
+        context.LessonProgresses.RemoveRange(lessonProgresses);
     }
 }

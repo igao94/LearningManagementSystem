@@ -12,8 +12,10 @@ public interface ICourseRepository
     Task<bool> CourseExistsAsync(string title);
     Task<Lesson?> GetLessonByIdAsync(string id);
     void RemoveLesson(Lesson lesson);
-    Task<Course?> GetCourseWithStudentsByIdAsync(string id);
     Task<IEnumerable<User>> GetCourseAttendees(string id);
     Task<LessonProgress?> GetLessonProgressAsync(string studentId, string lessonId);
     void AddLessonProgress(LessonProgress lessonProgress);
+    void RemoveLessonProgresses(IEnumerable<LessonProgress> lessonProgresses);
+    Task<Lesson?> GetLessonWithProgressByIdAsync(string id);
+    Task<Course?> GetCourseWithAttendeesAndLessonsAndProgressByIdAsync(string id);
 }

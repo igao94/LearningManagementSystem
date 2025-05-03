@@ -60,7 +60,7 @@ public class CoursesController : BaseApiController
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteCourse(string id)
     {
-        return HandleResult(await Mediator.Send(new DeleteCouresCommand(id)));
+        return HandleResult(await Mediator.Send(new DeleteCourseCommand(id)));
     }
 
     [Authorize(Policy = PolicyTypes.RequireAdminRole)]

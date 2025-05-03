@@ -4,16 +4,21 @@ using MediatR;
 
 namespace Application.Courses.Commands.DeleteCourse;
 
-public class DeleteCourseHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteCouresCommand, Result<Unit>>
+public class DeleteCourseHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteCourseCommand, Result<Unit>>
 {
-    public async Task<Result<Unit>> Handle(DeleteCouresCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit>> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
     {
-        var course = await unitOfWork.CourseRepository.GetCourseWithStudentsByIdAsync(request.Id);
+        var course = await unitOfWork.CourseRepository
+            .GetCourseWithAttendeesAndLessonsAndProgressByIdAsync(request.Id);
 
         if (course is null)
         {
             return Result<Unit>.Failure("Course not found.", 404);
         }
+
+        var lessonProgresses = course.Lessons.SelectMany(l => l.LessonProgresses);
+
+        unitOfWork.CourseRepository.RemoveLessonProgresses(lessonProgresses);
 
         unitOfWork.StudentRepository.RemoveCourseAttendances(course.Attendees);
 
