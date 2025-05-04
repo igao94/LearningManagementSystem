@@ -27,7 +27,7 @@ public class TrackLessonProgressHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("You must attend course to complete lesson.", 400);
         }
 
-        var lessonProgress = await CompleteLessonAsync(studentId, lesson.Id);
+        var lessonProgress = await MarkLessonAsCompletedAsync(studentId, lesson.Id);
 
         if (!lessonProgress) return Result<Unit>.Failure("You have already completed this lesson.", 400);
 
@@ -38,7 +38,7 @@ public class TrackLessonProgressHandler(IUnitOfWork unitOfWork,
             : Result<Unit>.Failure("Failed to mark lesson as completed.", 400);
     }
 
-    private async Task<bool> CompleteLessonAsync(string studentId, string lessonId)
+    private async Task<bool> MarkLessonAsCompletedAsync(string studentId, string lessonId)
     {
         var lessonProgress = await unitOfWork.CourseRepository.GetLessonProgressAsync(studentId, lessonId);
 

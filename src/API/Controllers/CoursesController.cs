@@ -1,4 +1,5 @@
 ﻿using Application.Courses;
+using Application.Courses.Commands.CertificateGeneration;
 using Application.Courses.Commands.CreateCourse;
 using Application.Courses.Commands.CreateLesson;
 using Application.Courses.Commands.DeleteCourse;
@@ -89,5 +90,11 @@ public class CoursesController : BaseApiController
     public async Task<ActionResult> MarkLessonCompleted(string lessonId)
     {
         return HandleResult(await Mediator.Send(new TrackLessonProgressCommand(lessonId)));
+    }
+
+    [HttpPost("generate-certificate/{id}")]
+    public async Task<ActionResult<CertificateDto>> GenerateCertificate(string id)
+    {
+        return HandleResult(await Mediator.Send(new CertificateGenerationCommand(id)));
     }
 }

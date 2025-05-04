@@ -23,5 +23,10 @@ public class MappingProfiles : Profile
         CreateMap<UpdateCourseDto, Course>();
 
         CreateMap<UpdateLessonDto, Lesson>();
+
+        CreateMap<Certificate, CertificateDto>()
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Student.FirstName))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Student.LastName))
+            .ForMember(dest => dest.Course, opt => opt.MapFrom(src => src.Course.Title));
     }
 }

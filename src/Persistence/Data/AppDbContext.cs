@@ -15,6 +15,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
     public DbSet<LessonProgress> LessonProgresses { get; set; }
 
+    public DbSet<Certificate> Certificates { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

@@ -128,4 +128,33 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     {
         context.LessonProgresses.RemoveRange(lessonProgresses);
     }
+
+    public async Task<bool> AreLessonsCompletedByStudentAsync(string courseId, string studentId)
+    {
+        var lessonProgress = await context.LessonProgresses
+            .Where(lp => lp.Lesson.CourseId == courseId && lp.StudentId == studentId)
+            .ToListAsync();
+
+        if (!lessonProgress.Any())
+        {
+            return false;
+        }
+
+        var totalLessonCount = await context.Lessons.CountAsync(l => l.CourseId == courseId);
+
+        if (lessonProgress.Count != totalLessonCount)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void AddCertificate(Certificate certificate) => context.Certificates.Add(certificate);
+
+
+    public async Task<Certificate?> GetCertificateByIdAsync(string studentId, string courseId)
+    {
+        return await context.Certificates.FindAsync(studentId, courseId);
+    }
 }

@@ -9,4 +9,5 @@ public class User : IdentityUser
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public ICollection<CourseAttendance> CourseAttendances { get; set; } = [];
     public ICollection<LessonProgress> LessonProgresses { get; set; } = [];
+    public ICollection<Certificate> Certificates { get; set; } = [];
 }

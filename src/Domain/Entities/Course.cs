@@ -9,5 +9,6 @@ public class Course
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public ICollection<Lesson> Lessons { get; set; } = [];
     public ICollection<CourseAttendance> Attendees { get; set; } = [];
+    public ICollection<Certificate> Certificates { get; set; } = [];
 }
 
