@@ -45,10 +45,11 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 
     public async Task<Course?> GetCourseByIdAsync(string id) => await context.Courses.FindAsync(id);
 
-    public async Task<Course?> GetCourseWithAttendeesAndLessonsAndProgressByIdAsync(string id)
+    public async Task<Course?> GetCourseWithAttendeesAndLessonsAndProgressAndCertificateByIdAsync(string id)
     {
         return await context.Courses
             .Include(c => c.Attendees)
+            .Include(c => c.Certificates)
             .Include(c => c.Lessons)
                 .ThenInclude(l => l.LessonProgresses)
             .FirstOrDefaultAsync(c => c.Id == id);
@@ -156,5 +157,10 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
     public async Task<Certificate?> GetCertificateByIdAsync(string studentId, string courseId)
     {
         return await context.Certificates.FindAsync(studentId, courseId);
+    }
+
+    public void RemoveCertificates(IEnumerable<Certificate> certificates)
+    {
+        context.Certificates.RemoveRange(certificates);
     }
 }

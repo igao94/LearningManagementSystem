@@ -9,7 +9,7 @@ public class DeleteCourseHandler(IUnitOfWork unitOfWork) : IRequestHandler<Delet
     public async Task<Result<Unit>> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
     {
         var course = await unitOfWork.CourseRepository
-            .GetCourseWithAttendeesAndLessonsAndProgressByIdAsync(request.Id);
+            .GetCourseWithAttendeesAndLessonsAndProgressAndCertificateByIdAsync(request.Id);
 
         if (course is null)
         {
@@ -21,6 +21,8 @@ public class DeleteCourseHandler(IUnitOfWork unitOfWork) : IRequestHandler<Delet
         unitOfWork.CourseRepository.RemoveLessonProgresses(lessonProgresses);
 
         unitOfWork.StudentRepository.RemoveCourseAttendances(course.Attendees);
+
+        unitOfWork.CourseRepository.RemoveCertificates(course.Certificates);
 
         unitOfWork.CourseRepository.RemoveCourse(course);
 

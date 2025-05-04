@@ -17,8 +17,9 @@ public interface ICourseRepository
     void AddLessonProgress(LessonProgress lessonProgress);
     void RemoveLessonProgresses(IEnumerable<LessonProgress> lessonProgresses);
     Task<Lesson?> GetLessonWithProgressByIdAsync(string id);
-    Task<Course?> GetCourseWithAttendeesAndLessonsAndProgressByIdAsync(string id);
+    Task<Course?> GetCourseWithAttendeesAndLessonsAndProgressAndCertificateByIdAsync(string id);
     Task<bool> AreLessonsCompletedByStudentAsync(string courseId, string studentId);
     Task<Certificate?> GetCertificateByIdAsync(string studentId, string courseId);
     void AddCertificate(Certificate certificate);
+    void RemoveCertificates(IEnumerable<Certificate> certificates);
 }
