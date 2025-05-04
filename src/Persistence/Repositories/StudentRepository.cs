@@ -44,11 +44,12 @@ public class StudentRepository(AppDbContext context) : IStudentRepository
         return await context.Users.FindAsync(id);
     }
 
-    public async Task<User?> GetStudentWithCoursesAndLessonProgressByIdAsync(string id)
+    public async Task<User?> GetStudentWithCourseAttendancesAndLessonProgressesAndCertificatesByIdAsync(string id)
     {
         return await context.Users
             .Include(u => u.CourseAttendances)
             .Include(u => u.LessonProgresses)
+            .Include(u => u.Certificates)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 

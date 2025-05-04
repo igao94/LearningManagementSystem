@@ -11,6 +11,6 @@ public interface IStudentRepository
     Task<CourseAttendance?> GetAttendanceByIdAsync(string studentId, string courseId);
     void AddCourseAttendance(CourseAttendance attendance);
     void RemoveCourseAttendance(CourseAttendance attendance);
-    Task<User?> GetStudentWithCoursesAndLessonProgressByIdAsync(string id);
+    Task<User?> GetStudentWithCourseAttendancesAndLessonProgressesAndCertificatesByIdAsync(string id);
     void RemoveCourseAttendances(IEnumerable<CourseAttendance> courseAttendances);
 }
