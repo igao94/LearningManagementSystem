@@ -11,6 +11,7 @@ using Application.Courses.DTOs;
 using Application.Courses.Queries.GetAllCourses;
 using Application.Courses.Queries.GetCourseAttendees;
 using Application.Courses.Queries.GetCourseById;
+using Application.Courses.Queries.GetLessonsProgressByCourseId;
 using Application.Students.DTOs;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
@@ -85,7 +86,7 @@ public class CoursesController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new GetCourseAttendeesQuery(id)));
     }
-
+    
     [HttpPost("mark-lesson-completed/{lessonId}")]
     public async Task<ActionResult> MarkLessonCompleted(string lessonId)
     {
@@ -96,5 +97,11 @@ public class CoursesController : BaseApiController
     public async Task<ActionResult<CertificateDto>> GenerateCertificate(string id)
     {
         return HandleResult(await Mediator.Send(new CertificateGenerationCommand(id)));
+    }
+
+    [HttpGet("get-lessons-progress/{id}")]
+    public async Task<ActionResult<LessonProgressDto>> GetLessonsProgressByCourseId(string id)
+    {
+        return HandleResult(await Mediator.Send(new GetLessonsProgressByCourseIdQuery(id)));
     }
 }

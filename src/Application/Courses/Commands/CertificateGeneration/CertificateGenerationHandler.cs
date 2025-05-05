@@ -53,8 +53,10 @@ public class CertificateGenerationHandler(IUnitOfWork unitOfWork,
 
     private async Task<bool> AreLessonsCompletedAsync(string courseId, string studentId)
     {
+        var totalLessonCount = await unitOfWork.CourseRepository.GetLessonsCountAsync(courseId);
+
         var areLessonsCompleted = await unitOfWork.CourseRepository
-            .AreLessonsCompletedByStudentAsync(courseId, studentId);
+            .AreLessonsCompletedByStudentAsync(courseId, studentId, totalLessonCount);
 
         if (!areLessonsCompleted)
         {

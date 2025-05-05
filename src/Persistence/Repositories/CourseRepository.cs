@@ -130,7 +130,18 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
         context.LessonProgresses.RemoveRange(lessonProgresses);
     }
 
-    public async Task<bool> AreLessonsCompletedByStudentAsync(string courseId, string studentId)
+    public async Task<int> GetLessonsCountAsync(string courseId)
+    {
+        return await context.Lessons.CountAsync(ca => ca.CourseId == courseId);
+    }
+
+    public async Task<int> GetCompletedLessonsCountForStudentAsync(string studentId, string courseId)
+    {
+        return await context.LessonProgresses
+            .CountAsync(lp => lp.StudentId == studentId && lp.Lesson.CourseId == courseId);
+    }
+
+    public async Task<bool> AreLessonsCompletedByStudentAsync(string courseId, string studentId, int lessonCount)
     {
         var lessonProgress = await context.LessonProgresses
             .Where(lp => lp.Lesson.CourseId == courseId && lp.StudentId == studentId)
@@ -141,9 +152,7 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
             return false;
         }
 
-        var totalLessonCount = await context.Lessons.CountAsync(l => l.CourseId == courseId);
-
-        if (lessonProgress.Count != totalLessonCount)
+        if (lessonProgress.Count != lessonCount)
         {
             return false;
         }
