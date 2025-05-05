@@ -14,12 +14,24 @@ public class GetLessonsProgressByCourseIdHandler(IUnitOfWork unitOfWork,
     {
         var studentId = userAccessor.GetUserId();
 
-        var courseId = request.Id;
+        var course = await unitOfWork.CourseRepository.GetCourseByIdAsync(request.Id);
 
-        var totalLessons = await unitOfWork.CourseRepository.GetLessonsCountAsync(courseId);
+        if (course is null)
+        {
+            return Result<LessonProgressDto>.Failure("Course not found.", 404);
+        }
+
+        var courseAttendance = await unitOfWork.StudentRepository.GetAttendanceByIdAsync(studentId, course.Id);
+
+        if (courseAttendance is null)
+        {
+            return Result<LessonProgressDto>.Failure("You are not attending this course.", 400);
+        }
+
+        var totalLessons = await unitOfWork.CourseRepository.GetLessonsCountAsync(course.Id);
 
         var completedLessons = await unitOfWork.CourseRepository
-            .GetCompletedLessonsCountForStudentAsync(studentId, courseId);
+            .GetCompletedLessonsCountForStudentAsync(studentId, course.Id);
 
         return Result<LessonProgressDto>.Success(new LessonProgressDto
         {
