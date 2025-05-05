@@ -35,8 +35,8 @@ public class GetLessonsProgressByCourseIdHandler(IUnitOfWork unitOfWork,
 
         return Result<LessonProgressDto>.Success(new LessonProgressDto
         {
-            TotalLessons = totalLessons,
-            CompletedLessons = completedLessons
+            CompletedLessons = completedLessons,
+            TotalLessons = totalLessons
         });
     }
 }
