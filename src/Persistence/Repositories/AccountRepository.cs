@@ -41,4 +41,14 @@ public class AccountRepository(UserManager<User> userManager) : IAccountReposito
     {
         return await userManager.FindByIdAsync(id);
     }
+
+    public async Task<string> GenerateResetPasswordTokenAsync(User user)
+    {
+        return await userManager.GeneratePasswordResetTokenAsync(user);
+    }
+
+    public async Task<IdentityResult> ResetPasswordAsync(User user, string resetToken, string newPassword)
+    {
+        return await userManager.ResetPasswordAsync(user, resetToken, newPassword);
+    }
 }

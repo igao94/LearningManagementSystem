@@ -9,5 +9,5 @@ public class UserAccessor(IHttpContextAccessor httpContextAccessor) : IUserAcces
     public string GetUserId()
     {
         return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-    }
+    }    
 }

@@ -32,7 +32,8 @@ public static class DependencyInjection
         services.AddIdentityCore<User>()
             .AddRoles<IdentityRole>()
             .AddRoleManager<RoleManager<IdentityRole>>()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         services.AddScoped<IAccountRepository, AccountRepository>();
 

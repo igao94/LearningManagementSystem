@@ -12,4 +12,6 @@ public interface IAccountRepository
     Task<User?> GetUserByEmailAsync(string email);
     Task<bool> CheckPasswordAsync(User user, string password);
     Task<User?> GetUserByIdAsync(string id);
+    Task<string> GenerateResetPasswordTokenAsync(User user);
+    Task<IdentityResult> ResetPasswordAsync(User user, string resetToken, string newPassword);
 }

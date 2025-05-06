@@ -1,5 +1,6 @@
 ﻿using Application.Accounts.Commands.Login;
 using Application.Accounts.Commands.Register;
+using Application.Accounts.Commands.ResetPassword;
 using Application.Accounts.DTOs;
 using Application.Accounts.Queries.GetCurrentUserInfo;
 using Microsoft.AspNetCore.Authorization;
@@ -26,5 +27,11 @@ public class AccountsController : BaseApiController
     public async Task<ActionResult<CurrentUserDto>> GetCurrentUser()
     {
         return HandleResult(await Mediator.Send(new GetCurrentUserInfoQuery()));
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult<ResetPasswordDto>> ResetPassword(ResetPasswordCommand command)
+    {
+        return HandleResult(await Mediator.Send(command));
     }
 }
