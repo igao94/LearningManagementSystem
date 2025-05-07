@@ -17,6 +17,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
     public DbSet<Certificate> Certificates { get; set; }
 
+    public DbSet<EmailVerificationToken> EmailVerificationTokens { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

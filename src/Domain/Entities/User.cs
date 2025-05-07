@@ -10,4 +10,5 @@ public class User : IdentityUser
     public ICollection<CourseAttendance> CourseAttendances { get; set; } = [];
     public ICollection<LessonProgress> LessonProgresses { get; set; } = [];
     public ICollection<Certificate> Certificates { get; set; } = [];
+    public ICollection<EmailVerificationToken> EmailVerificationTokens { get; set; } = [];
 }

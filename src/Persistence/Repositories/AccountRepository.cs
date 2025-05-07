@@ -2,10 +2,11 @@
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
 
 namespace Persistence.Repositories;
 
-public class AccountRepository(UserManager<User> userManager) : IAccountRepository
+public class AccountRepository(UserManager<User> userManager, AppDbContext context) : IAccountRepository
 {
     public async Task<IdentityResult> AddToRoleAsync(User user, string role)
     {
@@ -50,5 +51,17 @@ public class AccountRepository(UserManager<User> userManager) : IAccountReposito
     public async Task<IdentityResult> ResetPasswordAsync(User user, string resetToken, string newPassword)
     {
         return await userManager.ResetPasswordAsync(user, resetToken, newPassword);
+    }
+
+    public async Task<EmailVerificationToken?> GetTokenWithStudentAsync(string tokenId)
+    {
+        return await context.EmailVerificationTokens
+            .Include(t => t.Student)
+            .FirstOrDefaultAsync(t => t.Id == tokenId);
+    }
+
+    public void RemoveToken(EmailVerificationToken token)
+    {
+        context.EmailVerificationTokens.Remove(token);
     }
 }

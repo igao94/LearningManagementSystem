@@ -9,7 +9,9 @@ using MediatR;
 namespace Application.Accounts.Commands.Register;
 
 public class RegisterHandler(IUnitOfWork unitOfWork,
-    ITokenService tokenService) : IRequestHandler<RegisterCommand, Result<AccountDto>>
+    ITokenService tokenService,
+    IEmailVerificationLinkFactory emailVerificationLinkFactory,
+    IEmailSender emailSender) : IRequestHandler<RegisterCommand, Result<AccountDto>>
 {
     public async Task<Result<AccountDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
@@ -38,6 +40,10 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
             return Result<AccountDto>.Failure("Failed to create user.", 400);
         }
 
+        var verificationToken = CreateAndAttachVerificationToken(user);
+
+        await SendConfirmationLinkAsync(user, verificationToken);
+
         var roleResult = await unitOfWork.AccountRepository.AddToRoleAsync(user, UserRoles.Student);
 
         if (!roleResult.Succeeded)
@@ -56,5 +62,26 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
             Username = user.Email,
             Token = token
         });
+    }
+
+    private static EmailVerificationToken CreateAndAttachVerificationToken(User user)
+    {
+        var verificationToken = new EmailVerificationToken
+        {
+            StudentId = user.Id,
+            CreatedOn = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(1)
+        };
+
+        user.EmailVerificationTokens.Add(verificationToken);
+
+        return verificationToken;
+    }
+
+    private async Task SendConfirmationLinkAsync(User user, EmailVerificationToken verificationToken)
+    {
+        var verificationLink = emailVerificationLinkFactory.Create(verificationToken);
+
+        await emailSender.SendConfirmationLinkAsync(user, verificationLink);
     }
 }
