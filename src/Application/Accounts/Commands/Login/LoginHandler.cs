@@ -18,6 +18,11 @@ public class LoginHandler(IUnitOfWork unitOfWork,
             return Result<AccountDto>.Failure("User not found.", 404);
         }
 
+        if (!user.EmailConfirmed)
+        {
+            return Result<AccountDto>.Failure("Email not verified.", 400);
+        }
+
         var result = await unitOfWork.AccountRepository.CheckPasswordAsync(user, request.LoginDto.Password);
 
         if (!result)
