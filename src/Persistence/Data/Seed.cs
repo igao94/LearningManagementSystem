@@ -7,7 +7,7 @@ namespace Persistence.Data;
 public class Seed
 {
     public static async Task SeedDataAsync(AppDbContext context,
-        UserManager<User> userManager, 
+        UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager)
     {
         await CreateRolesAsync(roleManager);
@@ -200,7 +200,8 @@ public class Seed
                 Email = "admin@test.com",
                 UserName = "admin",
                 FirstName = "Admin",
-                LastName = "Admin"
+                LastName = "Admin",
+                EmailConfirmed = true
             };
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");
@@ -215,7 +216,8 @@ public class Seed
                     Email = "john@test.com",
                     UserName = "john",
                     FirstName = "John",
-                    LastName = "Doe"
+                    LastName = "Doe",
+                    EmailConfirmed = true
                 },
 
                 new ()
@@ -224,7 +226,8 @@ public class Seed
                     Email = "jane@test.com",
                     UserName = "jane",
                     FirstName = "Jane",
-                    LastName = "Smith"
+                    LastName = "Smith",
+                    EmailConfirmed = true
                 },
 
                 new ()
@@ -233,7 +236,8 @@ public class Seed
                     Email = "michael@test.com",
                     UserName = "michael",
                     FirstName = "Michael",
-                    LastName = "Johnson"
+                    LastName = "Johnson",
+                    EmailConfirmed = true
                 },
 
                 new ()
@@ -242,7 +246,8 @@ public class Seed
                     Email = "emily@test.com",
                     UserName = "emily",
                     FirstName = "Emily",
-                    LastName = "Davis"
+                    LastName = "Davis",
+                    EmailConfirmed = true
                 },
 
                 new ()
@@ -251,7 +256,8 @@ public class Seed
                     Email = "david@test.com",
                     UserName = "david",
                     FirstName = "David",
-                    LastName = "Wilson"
+                    LastName = "Wilson",
+                    EmailConfirmed = true
                 }
             ];
 
