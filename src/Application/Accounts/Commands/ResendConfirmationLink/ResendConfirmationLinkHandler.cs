@@ -20,6 +20,8 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("Student not found.", 404);
         }
 
+        await unitOfWork.AccountRepository.DeleteTokensForStudentAsync(student.Id);
+
         var token = new EmailVerificationToken
         {
             StudentId = student.Id,

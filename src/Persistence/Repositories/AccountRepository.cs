@@ -64,4 +64,11 @@ public class AccountRepository(UserManager<User> userManager, AppDbContext conte
     {
         context.EmailVerificationTokens.Remove(token);
     }
+
+    public async Task DeleteTokensForStudentAsync(string studentId)
+    {
+        await context.EmailVerificationTokens
+            .Where(et => et.StudentId == studentId)
+            .ExecuteDeleteAsync();
+    }
 }
