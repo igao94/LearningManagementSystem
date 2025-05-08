@@ -1,5 +1,6 @@
 ﻿using Application.Accounts.Commands.Login;
 using Application.Accounts.Commands.Register;
+using Application.Accounts.Commands.ResendConfirmationLink;
 using Application.Accounts.Commands.ResetPassword;
 using Application.Accounts.Commands.VerifyEmail;
 using Application.Accounts.DTOs;
@@ -41,5 +42,11 @@ public class AccountsController : BaseApiController
     public async Task<ActionResult> VerifyEmail(string tokenId)
     {
         return HandleResult(await Mediator.Send(new VerifyEmailCommand(tokenId)));
+    }
+
+    [HttpPost("resend-confirmation-link/{email}")]
+    public async Task<ActionResult> ResendConfirmationLink(string email)
+    {
+        return HandleResult(await Mediator.Send(new ResendConfirmationLinkCommand(email)));
     }
 }

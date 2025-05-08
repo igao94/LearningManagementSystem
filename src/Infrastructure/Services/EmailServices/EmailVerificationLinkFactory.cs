@@ -9,11 +9,11 @@ namespace Infrastructure.Services.EmailServices;
 public class EmailVerificationLinkFactory(IHttpContextAccessor httpContextAccessor,
     LinkGenerator linkGenerator) : IEmailVerificationLinkFactory
 {
-    public string Create(EmailVerificationToken token)
+    public string Create(string tokenId)
     {
         var verificationLink = linkGenerator.GetUriByName(httpContextAccessor.HttpContext!,
             RouteNames.VerifyEmail,
-            new { tokenId = token.Id });
+            new { tokenId });
 
         return verificationLink ?? throw new Exception("Could not create email verification link.");
     }

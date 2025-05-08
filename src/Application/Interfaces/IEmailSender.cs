@@ -4,5 +4,5 @@ namespace Application.Interfaces;
 
 public interface IEmailSender
 {
-    Task SendConfirmationLinkAsync(User student, string verificationLink);
+    Task SendConfirmationLinkAsync(string userEmail, string verificationLink);
 }
