@@ -14,8 +14,5 @@ public interface IAccountRepository
     Task<User?> GetUserByIdAsync(string id);
     Task<string> GenerateResetPasswordTokenAsync(User user);
     Task<IdentityResult> ResetPasswordAsync(User user, string resetToken, string newPassword);
-    Task<EmailVerificationToken?> GetTokenWithStudentAsync(string tokenId);
-    void RemoveToken(EmailVerificationToken token);
-    Task DeleteTokensForStudentAsync(string studentId);
     Task<User?> GetUserByEmailWithTokensAsync(string email);
 }

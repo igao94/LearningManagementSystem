@@ -41,6 +41,8 @@ public static class DependencyInjection
 
         services.AddScoped<ICourseRepository, CourseRepository>();
 
+        services.AddScoped<IEmailTokenRepository, EmailTokenRepository>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddAuthorizationBuilder()

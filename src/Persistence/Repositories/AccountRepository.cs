@@ -59,23 +59,4 @@ public class AccountRepository(UserManager<User> userManager, AppDbContext conte
     {
         return await userManager.ResetPasswordAsync(user, resetToken, newPassword);
     }
-
-    public async Task<EmailVerificationToken?> GetTokenWithStudentAsync(string tokenId)
-    {
-        return await context.EmailVerificationTokens
-            .Include(t => t.Student)
-            .FirstOrDefaultAsync(t => t.Id == tokenId);
-    }
-
-    public void RemoveToken(EmailVerificationToken token)
-    {
-        context.EmailVerificationTokens.Remove(token);
-    }
-
-    public async Task DeleteTokensForStudentAsync(string studentId)
-    {
-        await context.EmailVerificationTokens
-            .Where(et => et.StudentId == studentId)
-            .ExecuteDeleteAsync();
-    }
 }

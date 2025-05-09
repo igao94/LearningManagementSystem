@@ -8,7 +8,7 @@ public class VerifyEmailHandler(IUnitOfWork unitOfWork) : IRequestHandler<Verify
 {
     public async Task<Result<Unit>> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
     {
-        var token = await unitOfWork.AccountRepository.GetTokenWithStudentAsync(request.TokenId);
+        var token = await unitOfWork.EmailTokenRepository.GetTokenWithStudentAsync(request.TokenId);
 
         if (token is null || token.ExpiresAt < DateTime.UtcNow || token.Student.EmailConfirmed)
         {
@@ -17,7 +17,7 @@ public class VerifyEmailHandler(IUnitOfWork unitOfWork) : IRequestHandler<Verify
 
         token.Student.EmailConfirmed = true;
 
-        unitOfWork.AccountRepository.RemoveToken(token);
+        unitOfWork.EmailTokenRepository.RemoveToken(token);
 
         var result = await unitOfWork.SaveChangesAsync();
 
