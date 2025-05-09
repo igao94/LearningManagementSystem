@@ -23,6 +23,13 @@ public class AccountRepository(UserManager<User> userManager, AppDbContext conte
         return await userManager.FindByEmailAsync(email);
     }
 
+    public async Task<User?> GetUserByEmailWithTokensAsync(string email)
+    {
+        return await context.Users
+            .Include(u => u.EmailVerificationTokens)
+            .FirstOrDefaultAsync(u => u.Email == email);
+    }
+
     public async Task<IdentityResult> RegisterUserAsync(User user, string password)
     {
         return await userManager.CreateAsync(user, password);

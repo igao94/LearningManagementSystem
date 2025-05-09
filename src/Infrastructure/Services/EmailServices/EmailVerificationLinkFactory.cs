@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces;
 using Domain.Constants;
-using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
@@ -15,6 +14,6 @@ public class EmailVerificationLinkFactory(IHttpContextAccessor httpContextAccess
             RouteNames.VerifyEmail,
             new { tokenId });
 
-        return verificationLink ?? throw new Exception("Could not create email verification link.");
+        return  verificationLink ?? throw new Exception("Could not create email verification link.");
     }
 }

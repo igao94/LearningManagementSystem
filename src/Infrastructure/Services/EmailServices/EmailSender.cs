@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Entities;
 using FluentEmail.Core;
 
 namespace Infrastructure.Services.EmailServices;

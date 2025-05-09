@@ -17,4 +17,5 @@ public interface IAccountRepository
     Task<EmailVerificationToken?> GetTokenWithStudentAsync(string tokenId);
     void RemoveToken(EmailVerificationToken token);
     Task DeleteTokensForStudentAsync(string studentId);
+    Task<User?> GetUserByEmailWithTokensAsync(string email);
 }

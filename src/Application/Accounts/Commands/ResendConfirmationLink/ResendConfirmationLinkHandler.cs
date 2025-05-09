@@ -13,14 +13,23 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
     public async Task<Result<Unit>> Handle(ResendConfirmationLinkCommand request,
         CancellationToken cancellationToken)
     {
-        var student = await unitOfWork.AccountRepository.GetUserByEmailAsync(request.Email);
+        var student = await unitOfWork.AccountRepository.GetUserByEmailWithTokensAsync(request.Email);
 
         if (student is null || student.Email is null)
         {
             return Result<Unit>.Failure("Student not found.", 404);
         }
 
-        await unitOfWork.AccountRepository.DeleteTokensForStudentAsync(student.Id);
+        var lastTokenRequestTime = student.EmailVerificationTokens
+            .OrderByDescending(et => et.CreatedOn)
+            .FirstOrDefault()?.CreatedOn;
+
+        if (lastTokenRequestTime.HasValue && (DateTime.UtcNow - lastTokenRequestTime.Value).TotalMinutes < 5)
+        {
+            return Result<Unit>.Failure("You need to wait 5 minutes before requesting new token.", 400);
+        }
+
+        student.EmailVerificationTokens.Clear();
 
         var token = new EmailVerificationToken
         {
