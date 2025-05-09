@@ -45,6 +45,8 @@ public static class DependencyInjection
 
         services.AddScoped<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
 
+        services.AddHostedService<EmailTokenCleanupService>();
+
         return services;
     }
 }

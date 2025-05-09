@@ -70,7 +70,7 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
         {
             StudentId = user.Id,
             CreatedOn = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddDays(1)
+            ExpiresAt = DateTime.UtcNow.AddHours(1)
         };
 
         user.EmailVerificationTokens.Add(verificationToken);

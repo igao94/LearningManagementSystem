@@ -35,7 +35,7 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
         {
             StudentId = student.Id,
             CreatedOn = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddDays(1)
+            ExpiresAt = DateTime.UtcNow.AddHours(1)
         };
 
         student.EmailVerificationTokens.Add(token);
