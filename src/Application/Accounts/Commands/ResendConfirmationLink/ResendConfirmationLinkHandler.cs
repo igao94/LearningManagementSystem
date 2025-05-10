@@ -20,6 +20,11 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("Student not found.", 404);
         }
 
+        if (student.EmailConfirmed)
+        {
+            return Result<Unit>.Failure("You have already verified email.", 400);
+        }
+
         var lastTokenRequestTime = student.EmailVerificationTokens
             .OrderByDescending(et => et.CreatedOn)
             .FirstOrDefault()?.CreatedOn;
