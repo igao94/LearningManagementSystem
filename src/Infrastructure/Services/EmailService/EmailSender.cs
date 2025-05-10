@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using FluentEmail.Core;
 
-namespace Infrastructure.Services.EmailServices;
+namespace Infrastructure.Services.EmailService;
 
 public class EmailSender(IFluentEmail emailSender) : IEmailSender
 {

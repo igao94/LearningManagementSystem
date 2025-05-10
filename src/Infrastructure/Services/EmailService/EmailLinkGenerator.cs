@@ -3,12 +3,12 @@ using Domain.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Infrastructure.Services.EmailServices;
+namespace Infrastructure.Services.EmailService;
 
-public class EmailVerificationLinkFactory(IHttpContextAccessor httpContextAccessor,
+public class EmailLinkGenerator(IHttpContextAccessor httpContextAccessor,
     LinkGenerator linkGenerator) : IEmailVerificationLinkFactory
 {
-    public string Create(string tokenId)
+    public string CreateVerificationLink(string tokenId)
     {
         var verificationLink = linkGenerator.GetUriByName(httpContextAccessor.HttpContext!,
             RouteNames.VerifyEmail,

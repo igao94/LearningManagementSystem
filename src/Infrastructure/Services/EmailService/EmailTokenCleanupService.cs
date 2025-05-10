@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Infrastructure.Services;
+namespace Infrastructure.Services.EmailService;
 
 public class EmailTokenCleanupService(IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
-    private readonly TimeSpan _checkInterval = TimeSpan.FromHours(2);
+    private readonly TimeSpan _checkInterval = TimeSpan.FromDays(1);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

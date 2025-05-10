@@ -40,7 +40,7 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
 
         student.EmailVerificationTokens.Add(token);
 
-        var confirmationLink = emailVerificationLinkFactory.Create(token.Id);
+        var confirmationLink = emailVerificationLinkFactory.CreateVerificationLink(token.Id);
 
         await emailSender.SendConfirmationLinkAsync(student.Email, confirmationLink);
 

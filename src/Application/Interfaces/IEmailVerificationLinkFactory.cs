@@ -2,5 +2,5 @@
 
 public interface IEmailVerificationLinkFactory
 {
-    string Create(string tokenId);
+    string CreateVerificationLink(string tokenId);
 }

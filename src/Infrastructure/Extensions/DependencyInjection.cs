@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using Infrastructure.Security;
 using Infrastructure.Services;
-using Infrastructure.Services.EmailServices;
+using Infrastructure.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +43,7 @@ public static class DependencyInjection
 
         services.AddScoped<IEmailSender, EmailSender>();
 
-        services.AddScoped<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
+        services.AddScoped<IEmailVerificationLinkFactory, EmailLinkGenerator>();
 
         services.AddHostedService<EmailTokenCleanupService>();
 

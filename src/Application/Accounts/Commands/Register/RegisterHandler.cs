@@ -80,7 +80,7 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
 
     private async Task SendConfirmationLinkAsync(string userEmail, string tokenId)
     {
-        var verificationLink = emailVerificationLinkFactory.Create(tokenId);
+        var verificationLink = emailVerificationLinkFactory.CreateVerificationLink(tokenId);
 
         await emailSender.SendConfirmationLinkAsync(userEmail, verificationLink);
     }
