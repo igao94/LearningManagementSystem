@@ -4,12 +4,12 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Students.Commands.ToggleCourseAttendance;
+namespace Application.Students.Commands.AttendCourse;
 
-public class ToggleCourseAttendanceHandler(IUnitOfWork unitOfWork,
-    IUserAccessor userAccessor) : IRequestHandler<ToggleCourseAttendanceCommand, Result<Unit>>
+public class AttendCourseHandler(IUnitOfWork unitOfWork,
+    IUserAccessor userAccessor) : IRequestHandler<AttendCourseCommand, Result<Unit>>
 {
-    public async Task<Result<Unit>> Handle(ToggleCourseAttendanceCommand request,
+    public async Task<Result<Unit>> Handle(AttendCourseCommand request,
         CancellationToken cancellationToken)
     {
         var student = await unitOfWork.StudentRepository.GetStudentByIdAsync(userAccessor.GetUserId());
@@ -26,7 +26,12 @@ public class ToggleCourseAttendanceHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("Course not found.", 404);
         }
 
-        await AttendCourseAsync(student.Id, course.Id);
+        var attendResult = await AttendCourseAsync(student.Id, course.Id);
+
+        if (!attendResult)
+        {
+            return Result<Unit>.Failure("You are already attending this course.", 400);
+        }
 
         var result = await unitOfWork.SaveChangesAsync();
 
@@ -35,7 +40,7 @@ public class ToggleCourseAttendanceHandler(IUnitOfWork unitOfWork,
             : Result<Unit>.Failure("Course attendance failed.", 400);
     }
 
-    private async Task AttendCourseAsync(string studentId, string courseId)
+    private async Task<bool> AttendCourseAsync(string studentId, string courseId)
     {
         var attendance = await unitOfWork.StudentRepository.GetAttendanceByIdAsync(studentId, courseId);
 
@@ -48,10 +53,10 @@ public class ToggleCourseAttendanceHandler(IUnitOfWork unitOfWork,
             };
 
             unitOfWork.StudentRepository.AddCourseAttendance(attendance);
+
+            return true;
         }
-        else
-        {
-            unitOfWork.StudentRepository.RemoveCourseAttendance(attendance);
-        }
+
+        return false;
     }
 }

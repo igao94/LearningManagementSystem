@@ -1,6 +1,6 @@
 ﻿using Application.Students;
+using Application.Students.Commands.AttendCourse;
 using Application.Students.Commands.DeleteStudent;
-using Application.Students.Commands.ToggleCourseAttendance;
 using Application.Students.Commands.UpdateStudent;
 using Application.Students.DTOs;
 using Application.Students.Queries.GetAllStudents;
@@ -36,8 +36,8 @@ public class StudentsController : BaseApiController
     }
 
     [HttpPost("attend-course/{courseId}")]
-    public async Task<ActionResult> ToggleCourseAttendance(string courseId)
+    public async Task<ActionResult> AttendCourse(string courseId)
     {
-        return HandleResult(await Mediator.Send(new ToggleCourseAttendanceCommand(courseId)));
+        return HandleResult(await Mediator.Send(new AttendCourseCommand(courseId)));
     }
 }
