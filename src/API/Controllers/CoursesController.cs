@@ -27,7 +27,7 @@ public class CoursesController : BaseApiController
         return HandleResult(await Mediator.Send(new GetAllCoursesQuery(courseParams)));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = RouteNames.GetCourseById)]
     public async Task<ActionResult<CourseDto>> GetCourseById(string id)
     {
         return HandleResult(await Mediator.Send(new GetCourseByIdQuery(id)));
@@ -86,7 +86,7 @@ public class CoursesController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new GetCourseAttendeesQuery(id)));
     }
-    
+
     [HttpPost("mark-lesson-completed/{lessonId}")]
     public async Task<ActionResult> MarkLessonCompleted(string lessonId)
     {

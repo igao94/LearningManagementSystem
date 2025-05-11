@@ -7,14 +7,16 @@ using MediatR;
 namespace Application.Students.Commands.AttendCourse;
 
 public class AttendCourseHandler(IUnitOfWork unitOfWork,
-    IUserAccessor userAccessor) : IRequestHandler<AttendCourseCommand, Result<Unit>>
+    IUserAccessor userAccessor,
+    IEmailLinkGenerator emailLinkGenerator,
+    IEmailSender emailSender) : IRequestHandler<AttendCourseCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(AttendCourseCommand request,
         CancellationToken cancellationToken)
     {
         var student = await unitOfWork.StudentRepository.GetStudentByIdAsync(userAccessor.GetUserId());
 
-        if (student is null)
+        if (student is null || student.Email is null)
         {
             return Result<Unit>.Failure("Student not found.", 404);
         }
@@ -32,6 +34,10 @@ public class AttendCourseHandler(IUnitOfWork unitOfWork,
         {
             return Result<Unit>.Failure("You are already attending this course.", 400);
         }
+
+        var courseLink = emailLinkGenerator.CreateCourseLink(course.Id);
+
+        await emailSender.SendCourseLinkAsync(student.Email, course.Title, courseLink);
 
         var result = await unitOfWork.SaveChangesAsync();
 

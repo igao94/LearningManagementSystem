@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Routing;
 namespace Infrastructure.Services.EmailService;
 
 public class EmailLinkGenerator(IHttpContextAccessor httpContextAccessor,
-    LinkGenerator linkGenerator) : IEmailVerificationLinkFactory
+    LinkGenerator linkGenerator) : IEmailLinkGenerator
 {
     public string CreateVerificationLink(string tokenId)
     {
@@ -14,6 +14,15 @@ public class EmailLinkGenerator(IHttpContextAccessor httpContextAccessor,
             RouteNames.VerifyEmail,
             new { tokenId });
 
-        return  verificationLink ?? throw new Exception("Could not create email verification link.");
+        return verificationLink ?? throw new Exception("Could not create email verification link.");
+    }
+
+    public string CreateCourseLink(string courseId)
+    {
+        var courseLink = linkGenerator.GetUriByName(httpContextAccessor.HttpContext!,
+            RouteNames.GetCourseById,
+            new { id = courseId });
+
+        return courseLink ?? throw new Exception("Could not create course link.");
     }
 }

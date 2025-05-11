@@ -13,4 +13,13 @@ public class EmailSender(IFluentEmail emailSender) : IEmailSender
             .Body($"To verify your email <a href='{verificationLink}'>click here</a>", true)
             .SendAsync();
     }
+
+    public async Task SendCourseLinkAsync(string userEmail, string courseName, string courseLink)
+    {
+        await emailSender
+            .To(userEmail)
+            .Subject("Course attendance")
+            .Body($"Thank you for joining course <a href='{courseLink}'>{courseName}</a>.", true)
+            .SendAsync();
+    }
 }

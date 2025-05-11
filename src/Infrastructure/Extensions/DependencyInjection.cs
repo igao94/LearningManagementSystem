@@ -43,7 +43,7 @@ public static class DependencyInjection
 
         services.AddScoped<IEmailSender, EmailSender>();
 
-        services.AddScoped<IEmailVerificationLinkFactory, EmailLinkGenerator>();
+        services.AddScoped<IEmailLinkGenerator, EmailLinkGenerator>();
 
         services.AddHostedService<EmailTokenCleanupService>();
 

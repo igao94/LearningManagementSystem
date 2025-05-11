@@ -10,7 +10,7 @@ namespace Application.Accounts.Commands.Register;
 
 public class RegisterHandler(IUnitOfWork unitOfWork,
     ITokenService tokenService,
-    IEmailVerificationLinkFactory emailVerificationLinkFactory,
+    IEmailLinkGenerator emailVerificationLinkFactory,
     IEmailSender emailSender) : IRequestHandler<RegisterCommand, Result<AccountDto>>
 {
     public async Task<Result<AccountDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)

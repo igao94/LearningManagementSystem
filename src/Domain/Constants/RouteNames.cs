@@ -3,4 +3,6 @@
 public static class RouteNames
 {
     public const string VerifyEmail = "VerifyEmail";
+
+    public const string GetCourseById = "GetCourseById";
 }

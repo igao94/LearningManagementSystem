@@ -7,7 +7,7 @@ using MediatR;
 namespace Application.Accounts.Commands.ResendConfirmationLink;
 
 public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
-    IEmailVerificationLinkFactory emailVerificationLinkFactory,
+    IEmailLinkGenerator emailVerificationLinkFactory,
     IEmailSender emailSender) : IRequestHandler<ResendConfirmationLinkCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(ResendConfirmationLinkCommand request,
