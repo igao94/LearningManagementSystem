@@ -8,6 +8,8 @@ public class EmailVerificationTokenConfiguration : IEntityTypeConfiguration<Emai
 {
     public void Configure(EntityTypeBuilder<EmailVerificationToken> builder)
     {
+        builder.HasIndex(et => et.ExpiresAt);
+
         builder.HasOne(t => t.Student)
             .WithMany(u => u.EmailVerificationTokens)
             .HasForeignKey(t => t.StudentId)
