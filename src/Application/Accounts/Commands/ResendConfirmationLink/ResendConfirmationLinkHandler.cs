@@ -47,12 +47,17 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
 
         var confirmationLink = emailVerificationLinkFactory.CreateVerificationLink(token.Id);
 
-        await emailSender.SendConfirmationLinkAsync(student.Email, confirmationLink);
+        var emailResult = await emailSender.SendConfirmationLinkAsync(student.Email, confirmationLink);
+
+        if (!emailResult)
+        {
+            return Result<Unit>.Failure("Failed to send email.", 400);
+        }
 
         var result = await unitOfWork.SaveChangesAsync();
 
         return result
             ? Result<Unit>.Success(Unit.Value)
-            : Result<Unit>.Failure("Failed to send email.", 400);
+            : Result<Unit>.Failure("Failed to save token in database.", 400);
     }
 }

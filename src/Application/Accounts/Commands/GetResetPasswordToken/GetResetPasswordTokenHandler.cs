@@ -25,8 +25,10 @@ public class GetResetPasswordTokenHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("Failed to generate reset token.", 400);
         }
 
-        await emailSender.SendResetPasswordTokenAsync(user.Email, resetToken);
+        var result = await emailSender.SendResetPasswordTokenAsync(user.Email, resetToken);
 
-        return Result<Unit>.Success(Unit.Value);
+        return result
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure("Failed to send reset token.", 400);
     }
 }

@@ -2,7 +2,7 @@
 
 public interface IEmailSender
 {
-    Task SendConfirmationLinkAsync(string userEmail, string verificationLink);
-    Task SendCourseLinkAsync(string userEmail, string courseName, string courseLink);
-    Task SendResetPasswordTokenAsync(string userEmail, string resetToken);
+    Task<bool> SendConfirmationLinkAsync(string userEmail, string verificationLink);
+    Task<bool> SendCourseLinkAsync(string userEmail, string courseName, string courseLink);
+    Task<bool> SendResetPasswordTokenAsync(string userEmail, string resetToken);
 }

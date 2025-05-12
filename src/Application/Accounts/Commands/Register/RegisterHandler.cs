@@ -33,16 +33,21 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
             LastName = request.RegisterDto.LastName
         };
 
+        var verificationTokenId = CreateAndAttachVerificationToken(user);
+
+        var emailResult = await SendConfirmationLinkAsync(user.Email, verificationTokenId);
+
+        if (!emailResult)
+        {
+            return Result<AccountDto>.Failure("Failed to send email.", 400);
+        }
+
         var result = await unitOfWork.AccountRepository.RegisterUserAsync(user, request.RegisterDto.Password);
 
         if (!result.Succeeded)
         {
             return Result<AccountDto>.Failure("Failed to create user.", 400);
         }
-
-        var verificationTokenId = CreateAndAttachVerificationToken(user);
-
-        await SendConfirmationLinkAsync(user.Email, verificationTokenId);
 
         var roleResult = await unitOfWork.AccountRepository.AddToRoleAsync(user, UserRoles.Student);
 
@@ -78,10 +83,12 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
         return verificationToken.Id;
     }
 
-    private async Task SendConfirmationLinkAsync(string userEmail, string tokenId)
+    private async Task<bool> SendConfirmationLinkAsync(string userEmail, string tokenId)
     {
         var verificationLink = emailVerificationLinkFactory.CreateVerificationLink(tokenId);
 
-        await emailSender.SendConfirmationLinkAsync(userEmail, verificationLink);
+        var result = await emailSender.SendConfirmationLinkAsync(userEmail, verificationLink);
+
+        return result;
     }
 }
