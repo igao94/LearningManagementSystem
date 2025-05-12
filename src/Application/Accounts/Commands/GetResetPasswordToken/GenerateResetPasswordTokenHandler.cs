@@ -5,11 +5,11 @@ using MediatR;
 
 namespace Application.Accounts.Commands.GetResetPasswordToken;
 
-public class GetResetPasswordTokenHandler(IUnitOfWork unitOfWork,
-    IEmailSender emailSender) : IRequestHandler<GetResetPasswordTokenQuery, Result<Unit>>
+public class GenerateResetPasswordTokenHandler(IUnitOfWork unitOfWork,
+    IEmailSender emailSender) : IRequestHandler<GenerateResetPasswordTokenCommand, Result<Unit>>
 {
     public async Task<Result<Unit>>
-        Handle(GetResetPasswordTokenQuery request, CancellationToken cancellationToken)
+        Handle(GenerateResetPasswordTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await unitOfWork.AccountRepository.GetUserByEmailAsync(request.Email);
 

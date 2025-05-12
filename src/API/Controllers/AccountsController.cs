@@ -36,7 +36,7 @@ public class AccountsController : BaseApiController
     [HttpGet("get-reset-password-token/{email}")]
     public async Task<ActionResult> GetResetPasswordToken(string email)
     {
-        return HandleResult(await Mediator.Send(new GetResetPasswordTokenQuery(email)));
+        return HandleResult(await Mediator.Send(new GenerateResetPasswordTokenCommand(email)));
     }
 
     [HttpPost("reset-password")]
