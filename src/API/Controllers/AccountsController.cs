@@ -1,4 +1,5 @@
-﻿using Application.Accounts.Commands.Login;
+﻿using Application.Accounts.Commands.GetResetPasswordToken;
+using Application.Accounts.Commands.Login;
 using Application.Accounts.Commands.Register;
 using Application.Accounts.Commands.ResendConfirmationLink;
 using Application.Accounts.Commands.ResetPassword;
@@ -32,10 +33,16 @@ public class AccountsController : BaseApiController
         return HandleResult(await Mediator.Send(new GetCurrentUserInfoQuery()));
     }
 
-    [HttpPost("reset-password")]
-    public async Task<ActionResult<ResetPasswordDto>> ResetPassword(ResetPasswordCommand command)
+    [HttpGet("get-reset-password-token/{email}")]
+    public async Task<ActionResult> GetResetPasswordToken(string email)
     {
-        return HandleResult(await Mediator.Send(command));
+        return HandleResult(await Mediator.Send(new GetResetPasswordTokenQuery(email)));
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult<ResetPasswordDto>> ResetPassword(ResetPasswordDto resetPasswordDto)
+    {
+        return HandleResult(await Mediator.Send(new ResetPasswordCommand(resetPasswordDto)));
     }
 
     [HttpGet("verify-email/{tokenId}", Name = RouteNames.VerifyEmail)]

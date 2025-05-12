@@ -4,8 +4,7 @@ using MediatR;
 
 namespace Application.Accounts.Commands.ResetPassword;
 
-public class ResetPasswordCommand(string email, string newPassword) : IRequest<Result<ResetPasswordDto>>
+public class ResetPasswordCommand(ResetPasswordDto resetPasswordDto) : IRequest<Result<Unit>>
 {
-    public string Email { get; set; } = email;
-    public string NewPassword { get; set; } = newPassword;
+    public ResetPasswordDto ResetPasswordDto { get; set; } = resetPasswordDto;
 }

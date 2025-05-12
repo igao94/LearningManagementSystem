@@ -22,4 +22,13 @@ public class EmailSender(IFluentEmail emailSender) : IEmailSender
             .Body($"Thank you for joining course <a href='{courseLink}'>{courseName}</a>.", true)
             .SendAsync();
     }
+
+    public async Task SendResetPasswordTokenAsync(string userEmail, string resetToken)
+    {
+        await emailSender
+            .To(userEmail)
+            .Subject("Reset password request")
+            .Body($"{resetToken}", true)
+            .SendAsync();
+    }
 }

@@ -7,27 +7,27 @@ public class RegisterValidator : AbstractValidator<RegisterCommand>
 {
     public RegisterValidator()
     {
-        RuleFor(u => u.RegisterDto.FirstName)
+        RuleFor(r => r.RegisterDto.FirstName)
             .NotEmpty().WithMessage("FirstName is required.")
             .Matches(@"^[A-Z][a-z]+$")
             .WithMessage("First name must start with an uppercase letter and contain only one word.");
 
-        RuleFor(u => u.RegisterDto.LastName)
+        RuleFor(r => r.RegisterDto.LastName)
             .NotEmpty().WithMessage("LastName is required")
             .Matches(@"^[A-Z][a-z]+$")
             .WithMessage("Last name must start with an uppercase letter and contain only one word.");
 
-        RuleFor(u => u.RegisterDto.Username)
+        RuleFor(r => r.RegisterDto.Username)
             .NotEmpty().WithMessage("Username is required.")
             .Matches(@"^[a-z0-9]+$")
             .WithMessage("Username must be a single word with only lowercase letters and numbers, without spaces.");
 
-        RuleFor(u => u.RegisterDto.Email)
+        RuleFor(r => r.RegisterDto.Email)
             .NotEmpty().WithMessage("Email is required.")
             .EmailAddress()
             .WithMessage("Please enter a valid email address.");
 
-        RuleFor(u => u.RegisterDto.Password)
+        RuleFor(r => r.RegisterDto.Password)
             .NotEmpty().WithMessage("Password is required.")
             .MinimumLength(6).WithMessage("Password must be at least 6 characters.")
             .MaximumLength(20).WithMessage("Password cannot exceed 20 characters.")
