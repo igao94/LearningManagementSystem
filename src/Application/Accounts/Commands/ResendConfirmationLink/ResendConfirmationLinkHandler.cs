@@ -1,14 +1,12 @@
 ﻿using Application.Core;
-using Application.Interfaces;
-using Domain.Entities;
+using Application.Core.Services;
 using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Accounts.Commands.ResendConfirmationLink;
 
 public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
-    IEmailLinkGenerator emailVerificationLinkFactory,
-    IEmailSender emailSender) : IRequestHandler<ResendConfirmationLinkCommand, Result<Unit>>
+    IEmailService emailService) : IRequestHandler<ResendConfirmationLinkCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(ResendConfirmationLinkCommand request,
         CancellationToken cancellationToken)
@@ -36,18 +34,9 @@ public class ResendConfirmationLinkHandler(IUnitOfWork unitOfWork,
 
         student.EmailVerificationTokens.Clear();
 
-        var token = new EmailVerificationToken
-        {
-            StudentId = student.Id,
-            CreatedOn = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddHours(1)
-        };
+        var verificationTokenId = emailService.CreateAndAttachVerificationToken(student);
 
-        student.EmailVerificationTokens.Add(token);
-
-        var confirmationLink = emailVerificationLinkFactory.CreateVerificationLink(token.Id);
-
-        var emailResult = await emailSender.SendConfirmationLinkAsync(student.Email, confirmationLink);
+        var emailResult = await emailService.SendConfirmationLinkAsync(student.Email, verificationTokenId);
 
         if (!emailResult)
         {
