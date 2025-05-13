@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Core.Services;
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -8,8 +9,7 @@ namespace Application.Students.Commands.AttendCourse;
 
 public class AttendCourseHandler(IUnitOfWork unitOfWork,
     IUserAccessor userAccessor,
-    IEmailLinkGenerator emailLinkGenerator,
-    IEmailSender emailSender) : IRequestHandler<AttendCourseCommand, Result<Unit>>
+    IEmailService emailService) : IRequestHandler<AttendCourseCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(AttendCourseCommand request,
         CancellationToken cancellationToken)
@@ -35,9 +35,12 @@ public class AttendCourseHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("You are already attending this course.", 400);
         }
 
-        var courseLink = emailLinkGenerator.CreateCourseLink(course.Id);
+        var emailResult = await emailService.SendCourseLinkAsync(student.Email, course);
 
-        await emailSender.SendCourseLinkAsync(student.Email, course.Title, courseLink);
+        if (!emailResult)
+        {
+            return Result<Unit>.Failure("Failed to send email.", 400);
+        }
 
         var result = await unitOfWork.SaveChangesAsync();
 

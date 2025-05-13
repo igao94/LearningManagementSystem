@@ -30,4 +30,11 @@ public class EmailService(IEmailSender emailSender, IEmailLinkGenerator emailLin
     {
         return await emailSender.SendResetPasswordTokenAsync(email, resetToken);
     }
+
+    public async Task<bool> SendCourseLinkAsync(string studentEmail, Course course)
+    {
+        var courseLink = emailLinkGenerator.CreateCourseLink(course.Id);
+
+        return await emailSender.SendCourseLinkAsync(studentEmail, course.Title, courseLink);
+    }
 }
