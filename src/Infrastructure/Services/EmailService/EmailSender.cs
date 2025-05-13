@@ -4,8 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Services.EmailService;
 
-public class EmailSender(IFluentEmail emailSender,
-    ILogger<EmailSender> logger) : IEmailSender
+public class EmailSender(IFluentEmail emailSender, ILogger<EmailSender> logger) : IEmailSender
 {
     public async Task<bool> SendConfirmationLinkAsync(string userEmail, string verificationLink)
     {

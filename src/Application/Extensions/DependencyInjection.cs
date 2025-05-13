@@ -1,6 +1,7 @@
 ﻿using Application.Accounts.Commands.Register;
 using Application.Accounts.Validators;
 using Application.Core;
+using Application.Core.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,8 @@ public static class DependencyInjection
 
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+
+        services.AddScoped<IEmailService, EmailService>();
 
         services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
 

@@ -1,5 +1,6 @@
 ﻿using Application.Accounts.DTOs;
 using Application.Core;
+using Application.Core.Services;
 using Application.Interfaces;
 using Domain.Constants;
 using Domain.Entities;
@@ -10,8 +11,7 @@ namespace Application.Accounts.Commands.Register;
 
 public class RegisterHandler(IUnitOfWork unitOfWork,
     ITokenService tokenService,
-    IEmailLinkGenerator emailVerificationLinkFactory,
-    IEmailSender emailSender) : IRequestHandler<RegisterCommand, Result<AccountDto>>
+    IEmailService emailService) : IRequestHandler<RegisterCommand, Result<AccountDto>>
 {
     public async Task<Result<AccountDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
@@ -33,9 +33,9 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
             LastName = request.RegisterDto.LastName
         };
 
-        var verificationTokenId = CreateAndAttachVerificationToken(user);
+        var verificationTokenId = emailService.CreateAndAttachVerificationToken(user);
 
-        var emailResult = await SendConfirmationLinkAsync(user.Email, verificationTokenId);
+        var emailResult = await emailService.SendConfirmationLinkAsync(user.Email, verificationTokenId);
 
         if (!emailResult)
         {
@@ -67,28 +67,5 @@ public class RegisterHandler(IUnitOfWork unitOfWork,
             Username = user.Email,
             Token = token
         });
-    }
-
-    private static string CreateAndAttachVerificationToken(User user)
-    {
-        var verificationToken = new EmailVerificationToken
-        {
-            StudentId = user.Id,
-            CreatedOn = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddHours(1)
-        };
-
-        user.EmailVerificationTokens.Add(verificationToken);
-
-        return verificationToken.Id;
-    }
-
-    private async Task<bool> SendConfirmationLinkAsync(string userEmail, string tokenId)
-    {
-        var verificationLink = emailVerificationLinkFactory.CreateVerificationLink(tokenId);
-
-        var result = await emailSender.SendConfirmationLinkAsync(userEmail, verificationLink);
-
-        return result;
     }
 }
