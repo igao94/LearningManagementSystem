@@ -37,4 +37,11 @@ public class EmailService(IEmailSender emailSender, IEmailLinkGenerator emailLin
 
         return await emailSender.SendCourseLinkAsync(studentEmail, course.Title, courseLink);
     }
+
+    public async Task<bool> SendCompletedCourseNotificationAsync(string studentEmail, Course course)
+    {
+        var courseLink = emailLinkGenerator.CreateCourseLink(course.Id);
+
+        return await emailSender.SendCompletedCourseNotificationAsync(studentEmail, course.Title, courseLink);
+    }
 }

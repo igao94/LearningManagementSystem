@@ -34,7 +34,7 @@ public class EmailSender(IFluentEmail emailSender, ILogger<EmailSender> logger) 
             var result = await emailSender
                 .To(userEmail)
                 .Subject("Course attendance")
-                .Body($"Thank you for joining course <a href='{courseLink}'>{courseName}</a>.", true)
+                .Body($"Thank you for joining course: <a href='{courseLink}'>{courseName}</a>.", true)
                 .SendAsync();
 
             return result.Successful;
@@ -55,6 +55,29 @@ public class EmailSender(IFluentEmail emailSender, ILogger<EmailSender> logger) 
                 .To(userEmail)
                 .Subject("Reset password request")
                 .Body($"{resetToken}", true)
+                .SendAsync();
+
+            return result.Successful;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+        }
+
+        return false;
+    }
+
+    public async Task<bool> SendCompletedCourseNotificationAsync(string userEmail,
+        string courseName,
+        string courseLink)
+    {
+        try
+        {
+            var result = await emailSender
+                .To(userEmail)
+                .Subject("Course completion")
+                .Body($"Congratulations, you have completed course: <a href='{courseLink}'>{courseName}</a>.",
+                    true)
                 .SendAsync();
 
             return result.Successful;

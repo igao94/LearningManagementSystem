@@ -1,7 +1,7 @@
 ﻿using Application.Core;
+using Application.Core.Services;
 using Application.Courses.DTOs;
 using Application.Interfaces;
-using Application.Students.DTOs;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -11,6 +11,7 @@ namespace Application.Courses.Commands.CertificateGeneration;
 
 public class CertificateGenerationHandler(IUnitOfWork unitOfWork,
     IUserAccessor userAccessor,
+    IEmailService emailService,
     IMapper mapper) : IRequestHandler<CertificateGenerationCommand, Result<CertificateDto>>
 {
     public async Task<Result<CertificateDto>> Handle(CertificateGenerationCommand request,
@@ -18,7 +19,7 @@ public class CertificateGenerationHandler(IUnitOfWork unitOfWork,
     {
         var student = await unitOfWork.StudentRepository.GetStudentByIdAsync(userAccessor.GetUserId());
 
-        if (student is null)
+        if (student is null || student.Email is null)
         {
             return Result<CertificateDto>.Failure("Student not found.", 404);
         }
@@ -37,17 +38,24 @@ public class CertificateGenerationHandler(IUnitOfWork unitOfWork,
             return Result<CertificateDto>.Failure("You need to complete all lessons to get certificate.", 400);
         }
 
-        var certificate = await CreateCertificateAsync(student.Id, course.Id);
+        var certificateResult = await CreateCertificateAsync(student.Id, course.Id);
 
-        if (certificate is null)
+        if (certificateResult is null)
         {
             return Result<CertificateDto>.Failure("You already have certificate for this course.", 400);
+        }
+
+        var emailResult = await emailService.SendCompletedCourseNotificationAsync(student.Email, course);
+
+        if (!emailResult)
+        {
+            return Result<CertificateDto>.Failure("Failed to send email.", 400);
         }
 
         var result = await unitOfWork.SaveChangesAsync();
 
         return result
-            ? Result<CertificateDto>.Success(mapper.Map<CertificateDto>(certificate))
+            ? Result<CertificateDto>.Success(mapper.Map<CertificateDto>(certificateResult))
             : Result<CertificateDto>.Failure("Failed to generate certificate.", 400);
     }
 
