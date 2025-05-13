@@ -25,4 +25,9 @@ public class EmailService(IEmailSender emailSender, IEmailLinkGenerator emailLin
 
         return await emailSender.SendConfirmationLinkAsync(email, verificationLink);
     }
+
+    public async Task<bool> SendResetPasswordTokenAsync(string email, string resetToken)
+    {
+        return await emailSender.SendResetPasswordTokenAsync(email, resetToken);
+    }
 }

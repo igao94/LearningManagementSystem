@@ -4,8 +4,7 @@ using MediatR;
 
 namespace Application.Accounts.Commands.ResetPassword;
 
-public class ResetPasswordHandler(IUnitOfWork unitOfWork) 
-    : IRequestHandler<ResetPasswordCommand, Result<Unit>>
+public class ResetPasswordHandler(IUnitOfWork unitOfWork) : IRequestHandler<ResetPasswordCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(ResetPasswordCommand request,
         CancellationToken cancellationToken)

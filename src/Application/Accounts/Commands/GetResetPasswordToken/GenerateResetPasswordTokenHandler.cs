@@ -1,12 +1,12 @@
 ﻿using Application.Core;
-using Application.Interfaces;
+using Application.Core.Services;
 using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Accounts.Commands.GetResetPasswordToken;
 
 public class GenerateResetPasswordTokenHandler(IUnitOfWork unitOfWork,
-    IEmailSender emailSender) : IRequestHandler<GenerateResetPasswordTokenCommand, Result<Unit>>
+    IEmailService emailService) : IRequestHandler<GenerateResetPasswordTokenCommand, Result<Unit>>
 {
     public async Task<Result<Unit>>
         Handle(GenerateResetPasswordTokenCommand request, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ public class GenerateResetPasswordTokenHandler(IUnitOfWork unitOfWork,
             return Result<Unit>.Failure("Failed to generate reset token.", 400);
         }
 
-        var result = await emailSender.SendResetPasswordTokenAsync(user.Email, resetToken);
+        var result = await emailService.SendResetPasswordTokenAsync(user.Email, resetToken);
 
         return result
             ? Result<Unit>.Success(Unit.Value)
