@@ -11,5 +11,5 @@ public class CourseParams
         set => _search = value?.ToLower();
     }
 
-    public string? Sort { get; set; }
+    public string? Filter { get; set; }
 }
