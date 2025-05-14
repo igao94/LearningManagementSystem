@@ -9,17 +9,25 @@ namespace Application.Courses.Queries.GetAllCourses;
 
 public class GetAllCoursesHandler(IUnitOfWork unitOfWork,
     IUserAccessor userAccessor,
-    IMapper mapper) : IRequestHandler<GetAllCoursesQuery, Result<IEnumerable<CourseDto>>>
+    IMapper mapper) : IRequestHandler<GetAllCoursesQuery, Result<PagedList<CourseDto, DateTime?>>>
 {
-    public async Task<Result<IEnumerable<CourseDto>>> Handle(GetAllCoursesQuery request,
+    public async Task<Result<PagedList<CourseDto, DateTime?>>> Handle(GetAllCoursesQuery request,
         CancellationToken cancellationToken)
     {
         var currentUserId = userAccessor.GetUserId();
 
-        var courses = await unitOfWork.CourseRepository.GetAllCoursesAsync(request.CourseParams.Search,
-            request.CourseParams.Filter,
-            currentUserId);
+        var (courses, nextCursor) = await unitOfWork.CourseRepository
+            .GetAllCoursesAsync(request.CourseParams.Search,
+                request.CourseParams.Filter,
+                currentUserId,
+                request.CourseParams.PageSize,
+                request.CourseParams.Cursor);
 
-        return Result<IEnumerable<CourseDto>>.Success(mapper.Map<IEnumerable<CourseDto>>(courses));
+        return Result<PagedList<CourseDto, DateTime?>>
+            .Success(new PagedList<CourseDto, DateTime?>
+            {
+                Items = mapper.Map<IEnumerable<CourseDto>>(courses),
+                NextCursor = nextCursor
+            });
     }
 }

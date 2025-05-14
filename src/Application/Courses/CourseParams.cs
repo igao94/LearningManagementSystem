@@ -1,6 +1,8 @@
-﻿namespace Application.Courses;
+﻿using Application.Core;
 
-public class CourseParams
+namespace Application.Courses;
+
+public class CourseParams : PaginationParams<DateTime?>
 {
     private string? _search;
 

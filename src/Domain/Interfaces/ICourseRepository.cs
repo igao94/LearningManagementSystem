@@ -4,7 +4,12 @@ namespace Domain.Interfaces;
 
 public interface ICourseRepository
 {
-    Task<IEnumerable<Course>> GetAllCoursesAsync(string? searchTerm, string? filter, string currentUserId);
+    Task<(IEnumerable<Course>, DateTime?)> GetAllCoursesAsync(string? searchTerm,
+        string? filter,
+        string currentUserId,
+        int pageSize,
+        DateTime? cursor);
+
     Task<Course?> GetCourseByIdAsync(string id);
     Task<Course?> GetCourseWithLessonsByIdAsync(string id);
     void AddCourse(Course course);

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Courses.Queries.GetAllCourses;
 
-public class GetAllCoursesQuery(CourseParams courseParams) : IRequest<Result<IEnumerable<CourseDto>>>
+public class GetAllCoursesQuery(CourseParams courseParams) : IRequest<Result<PagedList<CourseDto, DateTime?>>>
 {
     public CourseParams CourseParams { get; set; } = courseParams;
 }

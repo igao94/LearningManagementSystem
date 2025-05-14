@@ -1,4 +1,5 @@
-﻿using Application.Courses;
+﻿using Application.Core;
+using Application.Courses;
 using Application.Courses.Commands.CertificateGeneration;
 using Application.Courses.Commands.CreateCourse;
 using Application.Courses.Commands.CreateLesson;
@@ -22,7 +23,8 @@ namespace API.Controllers;
 public class CoursesController : BaseApiController
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CourseDto>>> GetCourses([FromQuery] CourseParams courseParams)
+    public async Task<ActionResult<PagedList<CourseDto, DateTime?>>> GetCourses(
+        [FromQuery] CourseParams courseParams)
     {
         return HandleResult(await Mediator.Send(new GetAllCoursesQuery(courseParams)));
     }

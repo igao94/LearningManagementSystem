@@ -7,9 +7,11 @@ namespace Persistence.Repositories;
 
 public class CourseRepository(AppDbContext context) : ICourseRepository
 {
-    public async Task<IEnumerable<Course>> GetAllCoursesAsync(string? searchTerm,
+    public async Task<(IEnumerable<Course>, DateTime?)> GetAllCoursesAsync(string? searchTerm,
         string? filter,
-        string currentUserId)
+        string currentUserId,
+        int pageSize,
+        DateTime? cursor)
     {
         var query = context.Courses
             .OrderByDescending(c => c.CreatedAt)
@@ -40,9 +42,25 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
             _ => query
         };
 
-        var courses = await query.AsNoTracking().ToListAsync();
+        if (cursor.HasValue)
+        {
+            query = query.Where(c => c.CreatedAt <= cursor);
+        }
 
-        return courses;
+        var courses = await query
+            .Take(pageSize + 1)
+            .ToListAsync();
+
+        DateTime? nextCursor = null;
+
+        if (courses.Count > pageSize)
+        {
+            nextCursor = courses.Last().CreatedAt;
+
+            courses.RemoveAt(courses.Count - 1);
+        }
+
+        return (courses, nextCursor);
     }
 
     public async Task<Course?> GetCourseByIdAsync(string id) => await context.Courses.FindAsync(id);
