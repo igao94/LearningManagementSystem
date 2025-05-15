@@ -16,9 +16,11 @@ public class EmailTokenRepository(AppDbContext context) : IEmailTokenRepository
 
     public async Task RemoveExpiredTokensAsync()
     {
-        await context.EmailVerificationTokens
+        var verficationTokens = await context.EmailVerificationTokens
             .Where(et => et.ExpiresAt < DateTime.UtcNow)
-            .ExecuteDeleteAsync();
+            .ToListAsync();
+
+        context.EmailVerificationTokens.RemoveRange(verficationTokens);
     }
 
     public void RemoveToken(EmailVerificationToken token)
